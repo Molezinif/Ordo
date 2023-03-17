@@ -25,10 +25,10 @@ College institutional work assigned to inter multidisciplinary project
 Comming Soon
 
 ```
-<linha de comando>
+<command line>
 ```
 
-## :handshake: Colaboradores
+## :handshake: Collaborators
 
 <table>
   <tr>
@@ -67,6 +67,6 @@ Comming Soon
   </tr>
 </table>
 
-## :dart: Status do projeto
+## :dart: Project Status
 
-Em desenvolvimento!
+Under development!
