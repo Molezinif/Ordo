@@ -9,7 +9,7 @@ College institutional work assigned to inter multidisciplinary project
 - All product functionalities and ideas are archived in this document:
   https://docs.google.com/document/d/1UcoybYRKKgEJYOmPGgOLvt3lGG-ZvkivYmcMfwx6KnY/edit?usp=sharing
 
-## :wrench: Tecnologias e métodos utilizados
+## :wrench: Technologies and methods used
 
 - React Native;
 - NodeJS
@@ -20,15 +20,15 @@ College institutional work assigned to inter multidisciplinary project
 - Figma
 - Trello
 
-## :rocket: Rodando o projeto
+## :rocket: Running the project
 
 Comming Soon
 
 ```
-<linha de comando>
+<command line>
 ```
 
-## :handshake: Colaboradores
+## :handshake: Collaborators
 
 <table>
   <tr>
@@ -67,6 +67,6 @@ Comming Soon
   </tr>
 </table>
 
-## :dart: Status do projeto
+## :dart: Project Status
 
-Em desenvolvimento!
+Under development!
