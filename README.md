@@ -19,13 +19,16 @@ College institutional work assigned to inter multidisciplinary project
 - C4 Model
 - Figma
 - Trello
+- Eslint
+- Prettier
 
 ## :rocket: Running the project
 
-Comming Soon
+Suggestion: you must have node js installed on your machine
 
 ```
-<command line>
+git clone https://github.com/Molezinif/Ordo.git
+npx expo start
 ```
 
 ## :handshake: Collaborators
