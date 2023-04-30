@@ -70,6 +70,10 @@ npx expo start
   </tr>
 </table>
 
+## Links
+
+- Prototype: https://www.figma.com/community/file/1234335950313725295
+
 ## :dart: Project Status
 
 Under development!
