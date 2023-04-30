@@ -70,7 +70,7 @@ npx expo start
   </tr>
 </table>
 
-## Links
+## :link: Links
 
 - Prototype: https://www.figma.com/community/file/1234335950313725295
 
