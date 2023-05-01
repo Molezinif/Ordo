@@ -27,6 +27,7 @@ College institutional work assigned to inter multidisciplinary project
 Suggestion: you must have node js installed on your machine
 
 ```
+cd .\app
 git clone https://github.com/Molezinif/Ordo.git
 npx expo start
 ```
