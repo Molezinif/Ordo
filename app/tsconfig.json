@@ -1,6 +1,15 @@
 {
-  "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
-  }
+    "jsx": "react-native",
+    "target": "es2016",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "types": ["react", "react-native"]
+  },
+  "include": ["src/**/*", "App.tsx"],
+  "exclude": ["android", "ios", "compiled", "node_modules"],
+  "extends": "expo/tsconfig.base"
 }
