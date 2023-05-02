@@ -24,7 +24,7 @@ College institutional work assigned to inter multidisciplinary project
 
 ## :rocket: Running the project
 
-Suggestion: you must have node js installed on your machine
+Suggestion: you must have node js installed on your machine and install node modules
 
 ```
 git clone https://github.com/Molezinif/Ordo.git
