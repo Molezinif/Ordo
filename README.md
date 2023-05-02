@@ -29,7 +29,7 @@ Suggestion: you must have node js installed on your machine
 ```
 git clone https://github.com/Molezinif/Ordo.git
 cd .\app
-npx expo start
+npm start
 ```
 
 ## :handshake: Collaborators
