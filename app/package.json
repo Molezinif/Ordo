@@ -20,7 +20,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
-    "@react-native-async-storage/async-storage": "^1.18.1",
     "@types/react": "~18.0.14",
     "@types/styled-components": "^5.1.26",
     "@types/styled-components-react-native": "^5.2.1",
