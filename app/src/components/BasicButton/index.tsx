@@ -8,6 +8,8 @@ interface Props {
   warning?: boolean
   important?: boolean
   disabled?: boolean
+  backgroundColor?: string
+  width?: string
 }
 
 const BasicButton = ({
@@ -15,7 +17,9 @@ const BasicButton = ({
   onPress,
   warning,
   important,
-  disabled
+  disabled,
+  backgroundColor,
+  width
 }: Props): JSX.Element => {
   return (
     <ButtonWrapper
@@ -23,6 +27,8 @@ const BasicButton = ({
       onPress={disabled ? () => null : onPress}
       warning={warning}
       important={important}
+      backgroundColor={backgroundColor}
+      width={width}
     >
       <ButtonText warning={warning} important={important} disabled={disabled}>
         {text}
@@ -31,4 +37,4 @@ const BasicButton = ({
   )
 }
 
-export default BasicButton
+export { BasicButton }

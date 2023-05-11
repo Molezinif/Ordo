@@ -1,22 +1,20 @@
 import styled from 'styled-components/native'
 
-export const ButtonWrapper = styled.TouchableOpacity<{
+interface ButtonWrapperProps {
   warning?: boolean
   important?: boolean
-}>`
-  paddingvertical: 10px;
-  paddinghorizontal: 10px;
-  border-radius: 10px;
-  background-color: 'fff';
-  border: ${(props: any) =>
-    props.warning
-      ? `1px solid ${props.theme.warning}`
-      : props.important
-      ? `1px solid ${props.theme.primary}`
-      : `1px solid ${props.theme.neutral}`};
+  backgroundColor?: string
+  width?: string
+}
+
+export const ButtonWrapper = styled.TouchableOpacity<ButtonWrapperProps>`
+  padding: 10px;
+  border-radius: 15px;
+  background-color: ${(props) => props.backgroundColor || '#65B3FF'};
   display: flex;
   align-items: center;
   justify-content: center;
+  width: ${(props) => (props.width ? props.width : '100%')};
   min-width: 150px;
 `
 
@@ -26,11 +24,6 @@ export const ButtonText = styled.Text<{
   disabled?: boolean
 }>`
   font-size: 18px;
-  color: ${(props: any) =>
-    props.warning
-      ? props.theme.warning
-      : props.important
-      ? props.theme.primary
-      : props.theme.text};
-  opacity: ${(props: any) => (props.disabled ? 0.2 : 1)};
+  color: white;
+  opacity: 1;
 `
