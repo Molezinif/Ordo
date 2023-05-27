@@ -14,7 +14,7 @@ export const TextContainer = styled.View`
   justify-content: center;
 `
 
-export const Text = styled.Text`
+export const MainText = styled.Text`
   font-size: 28px;
   color: #65b3ff;
 `
@@ -23,4 +23,17 @@ export const ButtonContainer = styled.View`
   position: absolute;
   bottom: 100px;
   margin-top: 200px;
+  align-items: center;
+  gap: 5px;
+`
+
+export const LinkText = styled.Text`
+  font-size: 16px;
+  color: #8d8d99;
+`
+
+export const LinkContent = styled.Text`
+  font-size: 16px;
+  color: #65b3ff;
+  text-decoration: underline;
 `

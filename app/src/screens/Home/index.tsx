@@ -1,5 +1,13 @@
-import { ButtonContainer, Container, Text, TextContainer } from './styles'
+import {
+  ButtonContainer,
+  Container,
+  LinkContent,
+  LinkText,
+  MainText,
+  TextContainer
+} from './styles'
 import { BasicButton } from '../../components/BasicButton'
+import { Link } from '@react-navigation/native'
 
 export default function Home({ navigation }) {
   const handleButtonPress = () => {
@@ -9,9 +17,9 @@ export default function Home({ navigation }) {
   return (
     <Container>
       <TextContainer>
-        <Text>Comece Agora,</Text>
-        <Text>Gerencie sua empresa </Text>
-        <Text>conosco!</Text>
+        <MainText>Comece Agora,</MainText>
+        <MainText>Gerencie sua empresa </MainText>
+        <MainText>conosco!</MainText>
       </TextContainer>
       <ButtonContainer>
         <BasicButton
@@ -19,6 +27,10 @@ export default function Home({ navigation }) {
           onPress={handleButtonPress}
           width="280px"
         />
+        <LinkText>
+          Já tem uma conta?{' '}
+          <Link to="/Login">{<LinkContent>Login</LinkContent>}</Link>
+        </LinkText>
       </ButtonContainer>
     </Container>
   )
