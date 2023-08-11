@@ -1,17 +1,40 @@
-import { Text, Heading } from 'native-base'
-import { Container } from './styles'
+import { Text, Heading, Avatar } from 'native-base'
+import {
+  Container,
+  MainContentContainer,
+  ToggleContainer,
+  TopBarContainer
+} from './styles'
+import { ToggleButton } from '@/components/ToggleButton'
+import { mockAvatarImage } from '@/constants/dashboard'
 
 export function Dashboard() {
   return (
     <Container>
-      <Heading>
-        A component library for the{' '}
-        <Heading color="emerald.400">React Ecosystem</Heading>
+      <TopBarContainer>
+        <Text fontSize={20} bold>
+          Dashboard
+        </Text>
+        <Avatar
+          bg="green.500"
+          source={{
+            uri: mockAvatarImage
+          }}
+        >
+          AJ
+        </Avatar>
+      </TopBarContainer>
+      <Heading marginTop={30} fontSize={35}>
+        {'Olá,\nUsuário!👋'}
       </Heading>
-      <Text pt="3">
-        NativeBase is a simple, modular and accessible component library that
-        gives you building blocks to build you React applications.
-      </Text>
+      <MainContentContainer>
+        <ToggleContainer>
+          <ToggleButton
+            optionOneText="Produtividade"
+            optionTwoText="Overview"
+          />
+        </ToggleContainer>
+      </MainContentContainer>
     </Container>
   )
 }
