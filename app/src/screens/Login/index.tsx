@@ -5,22 +5,22 @@ import {
   Form,
   Header,
   Input,
-  SubmitButton,
   Title,
   TitleText
 } from './styles'
-import { BasicButton } from '../../components/BasicButton'
-import { View, Image } from 'react-native'
+import { BasicButton } from '@/components/BasicButton'
+import { Image } from 'react-native'
 
-export default function Login({ navigation }) {
+export function Login({ navigation }) {
   const handleLogin = () => {
-    // lógica para enviar dados do formulário para o servidor
+    // TODO: lógica para enviar dados do formulário para o servidor
+    navigation.navigate('Dashboard')
   }
 
   return (
     <Container>
       <Image
-        source={require('../../assets/logo.png')}
+        source={require('@/assets/logo.png')}
         style={{
           width: 120,
           height: 120,
@@ -49,7 +49,12 @@ export default function Login({ navigation }) {
           textContentType="password"
         />
         <ButtonWrapper>
-          <SubmitButton title={'Login'} />
+          <BasicButton
+            onPress={handleLogin}
+            text="Entrar"
+            size="lg"
+            width="100%"
+          />
         </ButtonWrapper>
       </Form>
     </Container>

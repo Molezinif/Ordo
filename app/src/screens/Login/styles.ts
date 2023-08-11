@@ -44,12 +44,6 @@ export const Input = styled.TextInput`
   font-size: 16px;
 `
 
-export const SubmitButton = styled.Button`
-  margin-top: 32px;
-  background: #65b3ff;
-  color: #fff;
-`
-
 export const Container = styled.View`
   flex: 1;
   background-color: #fff;

@@ -6,10 +6,10 @@ import {
   MainText,
   TextContainer
 } from './styles'
-import { BasicButton } from '../../components/BasicButton'
+import { BasicButton } from '@/components/BasicButton'
 import { Link } from '@react-navigation/native'
 
-export default function Home({ navigation }) {
+export function Home({ navigation }) {
   const handleButtonPress = () => {
     navigation.navigate('Register')
   }
@@ -23,9 +23,10 @@ export default function Home({ navigation }) {
       </TextContainer>
       <ButtonContainer>
         <BasicButton
-          text={'Começar'}
           onPress={handleButtonPress}
-          width="280px"
+          text="Cadastre-se"
+          size="lg"
+          width="100%"
         />
         <LinkText>
           Já tem uma conta?{' '}

@@ -8,7 +8,11 @@
     "noImplicitAny": false,
     "strict": true,
     "skipLibCheck": true,
-    "types": ["react", "react-native"]
+    "types": ["react", "react-native"],
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"]
+    }
   },
   "include": ["src/**/*", "App.tsx"],
   "exclude": ["android", "ios", "compiled", "node_modules"],

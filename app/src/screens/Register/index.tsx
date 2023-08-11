@@ -1,24 +1,17 @@
 import React, { useState } from 'react'
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet
-} from 'react-native'
+import { TouchableOpacity } from 'react-native'
 import {
   ButtonWrapper,
   Container,
   Form,
   Header,
   Input,
-  SubmitButton,
   Title,
   TitleText
 } from './styles'
-import { BasicButton } from '../../components/BasicButton'
+import { BasicButton } from '@/components/BasicButton'
 
-export default function Register({ navigation }) {
+export function Register({ navigation }) {
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
   const [username, setUsername] = useState('')
@@ -79,8 +72,9 @@ export default function Register({ navigation }) {
         <ButtonWrapper>
           <BasicButton
             onPress={handleRegister}
-            text={'Finalizar'}
-            width="100px"
+            text="Finalizar"
+            width="50%"
+            size="md"
           />
         </ButtonWrapper>
       </Form>

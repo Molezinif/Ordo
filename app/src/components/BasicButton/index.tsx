@@ -1,39 +1,34 @@
 import React from 'react'
-
-import { ButtonWrapper, ButtonText } from './styles'
+import { Button } from 'native-base'
 
 interface Props {
-  text: string
   onPress: (...args: any[]) => void
-  warning?: boolean
-  important?: boolean
   disabled?: boolean
-  backgroundColor?: string
   width?: string
+  height?: string
+  size?: string
+  text: string
 }
 
 const BasicButton = ({
   text,
   onPress,
-  warning,
-  important,
   disabled,
-  backgroundColor,
-  width
+  width,
+  size
 }: Props): JSX.Element => {
   return (
-    <ButtonWrapper
-      disabled={disabled}
-      onPress={disabled ? () => null : onPress}
-      warning={warning}
-      important={important}
-      backgroundColor={backgroundColor}
+    <Button
+      onPress={onPress}
+      style={{ backgroundColor: '#65B3FF' }}
+      size={size}
+      _text={{ fontSize: 16, fontWeight: 'bold' }}
       width={width}
+      borderRadius={10}
+      disabled={disabled}
     >
-      <ButtonText warning={warning} important={important} disabled={disabled}>
-        {text}
-      </ButtonText>
-    </ButtonWrapper>
+      {text}
+    </Button>
   )
 }
 
