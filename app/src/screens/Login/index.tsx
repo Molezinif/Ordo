@@ -1,20 +1,26 @@
 import React from 'react'
+import { Image } from 'react-native'
+import { useAuth } from '@/context/auth'
+import { BasicButton } from '@/components/BasicButton'
+import { Link } from '@react-navigation/native'
 import {
   ButtonWrapper,
   Container,
   Form,
   Header,
   Input,
+  LinkContent,
+  LinkText,
+  LinkWrapper,
   Title,
   TitleText
 } from './styles'
-import { BasicButton } from '@/components/BasicButton'
-import { Image } from 'react-native'
 
 export function Login({ navigation }) {
+  const { signIn } = useAuth()
+
   const handleLogin = () => {
-    // TODO: lógica para enviar dados do formulário para o servidor
-    navigation.navigate('Dashboard')
+    signIn()
   }
 
   return (
@@ -24,7 +30,6 @@ export function Login({ navigation }) {
         style={{
           width: 120,
           height: 120,
-          display: 'flex',
           alignSelf: 'center',
           marginTop: 100,
           marginBottom: 20
@@ -44,7 +49,6 @@ export function Login({ navigation }) {
         />
         <Input
           placeholder="Senha"
-          value={() => {}}
           secureTextEntry={true}
           textContentType="password"
         />
@@ -55,6 +59,14 @@ export function Login({ navigation }) {
             size="lg"
             width="100%"
           />
+          <LinkWrapper>
+            <LinkText>
+              Ainda não tem uma conta?{' '}
+              <Link to="/Register">
+                <LinkContent>Cadastre-se</LinkContent>
+              </Link>
+            </LinkText>
+          </LinkWrapper>
         </ButtonWrapper>
       </Form>
     </Container>

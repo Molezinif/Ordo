@@ -28,12 +28,16 @@ export const ButtonContainer = styled.View`
 `
 
 export const LinkText = styled.Text`
-  font-size: 16px;
-  color: #8d8d99;
+  position: absolute;
+  bottom: 100px;
+  margin-top: 200px;
+  align-items: center;
+  gap: 5px;
 `
 
 export const LinkContent = styled.Text`
   font-size: 16px;
   color: #65b3ff;
   text-decoration: underline;
+  text-decoration-color: #65b3ff;
 `

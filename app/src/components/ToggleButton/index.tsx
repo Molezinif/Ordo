@@ -33,10 +33,10 @@ export function ToggleButton({
 
   return (
     <Container>
-      <OptionOne isSelected={isOne} onPress={onPressOne}>
+      <OptionOne isSelected={isOne} onPress={onPressOne} activeOpacity={1}>
         <OptionText isSelected={isOne}>{optionOneText}</OptionText>
       </OptionOne>
-      <OptionTwo isSelected={isTwo} onPress={onPressTwo}>
+      <OptionTwo isSelected={isTwo} onPress={onPressTwo} activeOpacity={1}>
         <OptionText isSelected={isTwo}>{optionTwoText}</OptionText>
       </OptionTwo>
     </Container>

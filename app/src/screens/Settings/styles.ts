@@ -12,14 +12,3 @@ export const TopBarContainer = styled.View`
   justify-content: space-between;
   align-items: center;
 `
-
-export const MainContentContainer = styled.View`
-  width: 100%;
-  margin-top: 40px;
-`
-
-export const ToggleContainer = styled.View`
-  width: 50%;
-  align-self: flex-start;
-  margin-bottom: 20px;
-`

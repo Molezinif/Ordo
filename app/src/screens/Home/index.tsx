@@ -28,11 +28,11 @@ export function Home({ navigation }) {
           size="lg"
           width="100%"
         />
-        <LinkText>
-          Já tem uma conta?{' '}
-          <Link to="/Login">{<LinkContent>Login</LinkContent>}</Link>
-        </LinkText>
       </ButtonContainer>
+      <LinkText>
+        Já tem uma conta?{' '}
+        <Link to="/Login">{<LinkContent>Login</LinkContent>}</Link>
+      </LinkText>
     </Container>
   )
 }

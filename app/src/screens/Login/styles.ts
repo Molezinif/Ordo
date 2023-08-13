@@ -8,15 +8,11 @@ export const Header = styled.View`
   padding: 0 24px;
 `
 
-export const BackButton = styled.Image`
-  width: 24px;
-  height: 24px;
-`
-
 export const Title = styled.View`
   flex: 1;
   margin-bottom: 24px;
 `
+
 export const TitleText = styled.Text`
   font-size: 30px;
   font-weight: bold;
@@ -25,13 +21,6 @@ export const TitleText = styled.Text`
 export const Form = styled.View`
   flex: 1;
   padding: 0 24px;
-`
-
-export const Label = styled.Text`
-  margin-top: 24px;
-  margin-bottom: 8px;
-  font-size: 16px;
-  font-weight: bold;
 `
 
 export const Input = styled.TextInput`
@@ -48,8 +37,24 @@ export const Container = styled.View`
   flex: 1;
   background-color: #fff;
 `
+
 export const ButtonWrapper = styled.View`
-  flex: 1;
+  display: flex;
   padding: 10px 0;
-  align-items: flex-end;
+  align-items: center;
+`
+
+export const LinkWrapper = styled.View`
+  padding: 10px 0;
+`
+
+export const LinkText = styled.Text`
+  font-size: 16px;
+  color: #8d8d99;
+`
+
+export const LinkContent = styled.Text`
+  font-size: 16px;
+  color: #65b3ff;
+  text-decoration: underline;
 `
