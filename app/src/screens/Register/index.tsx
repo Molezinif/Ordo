@@ -10,74 +10,83 @@ import {
   TitleText
 } from './styles'
 import { BasicButton } from '@/components/BasicButton'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '../../../firebase'
+import { CustomInput } from '@/components/shared/CustomFuckingInput'
+import { useForm } from 'react-hook-form'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export function Register({ navigation }) {
-  const [email, setEmail] = useState('')
-  const [phone, setPhone] = useState('')
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-
-  const handleRegister = () => {
-    // lógica para enviar dados do formulário para o servidor
+  const { control, handleSubmit } = useForm()
+  const onSubmit = async (data) => {
+    try {
+      await createUserWithEmailAndPassword(auth, data?.email, data?.password)
+      navigation.navigate('Login')
+    } catch (error) {
+      throw new Error(JSON.stringify(error))
+    }
   }
 
   return (
-    <Container>
+    <KeyboardAwareScrollView
+      resetScrollToCoords={{ x: 0, y: 0 }}
+      scrollEnabled={true}
+      style={{
+        flex: 1,
+        backgroundColor: 'white'
+      }}
+    >
       <Header>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-        ></TouchableOpacity>
         <Title>
           <TitleText>Bem vindo,</TitleText>
           <TitleText>Cadastre-se</TitleText>
         </Title>
       </Header>
       <Form>
-        <Input
-          placeholder="Email"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-          autoCapitalize="none"
-          keyboardType="email-address"
-          textContentType="emailAddress"
+        <CustomInput
+          placeholder="Insira o email"
+          InputTitle={'Email:'}
+          control={control}
+          name={'Email'}
+          type="email-address"
         />
-        <Input
-          placeholder="Telefone"
-          value={phone}
-          onChangeText={(text) => setPhone(text)}
-          keyboardType="phone-pad"
+        <CustomInput
+          placeholder="Insira o telefone"
+          InputTitle={'Telefone'}
+          control={control}
+          name={'Phone'}
+          type="phone-pad"
         />
-        <Input
-          placeholder="Usuário"
-          value={username}
-          onChangeText={(text) => setUsername(text)}
-          autoCapitalize="none"
-          textContentType="username"
+        <CustomInput
+          placeholder="Insira seu nome"
+          control={control}
+          type="username"
+          InputTitle={'Usuário:'}
+          name={'user'}
         />
-        <Input
-          placeholder="Senha"
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          secureTextEntry={true}
-          textContentType="password"
+        <CustomInput
+          placeholder="Insira a senha"
+          control={control}
+          type="password"
+          InputTitle={'Senha:'}
+          name={'password'}
         />
-        <Input
-          placeholder="Confirmar senha"
-          value={confirmPassword}
-          onChangeText={(text) => setConfirmPassword(text)}
-          secureTextEntry={true}
-          textContentType="password"
+        <CustomInput
+          placeholder="Confirme sua senha"
+          InputTitle={'Confirmar senha:'}
+          name={'confirmPassword'}
+          control={control}
+          type="password"
         />
         <ButtonWrapper>
           <BasicButton
-            onPress={handleRegister}
+            onPress={handleSubmit(onSubmit)}
             text="Finalizar"
             width="50%"
             size="md"
           />
         </ButtonWrapper>
       </Form>
-    </Container>
+    </KeyboardAwareScrollView>
   )
 }

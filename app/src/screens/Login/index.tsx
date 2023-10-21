@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Image } from 'react-native'
 import { useAuth } from '@/context/auth'
 import { BasicButton } from '@/components/BasicButton'
@@ -15,16 +15,29 @@ import {
   Title,
   TitleText
 } from './styles'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { CustomInput } from '@/components/shared/CustomFuckingInput'
+import { useForm } from 'react-hook-form'
 
-export function Login({ navigation }) {
+export function Login() {
+  const { control, handleSubmit } = useForm()
+
   const { signIn } = useAuth()
 
-  const handleLogin = () => {
-    signIn()
+  const handleLogin = async (data) => {
+    console.log(data)
+    await signIn({ email: data?.email, password: data?.password })
   }
 
   return (
-    <Container>
+    <KeyboardAwareScrollView
+      resetScrollToCoords={{ x: 0, y: 0 }}
+      scrollEnabled={true}
+      style={{
+        flex: 1,
+        backgroundColor: 'white'
+      }}
+    >
       <Image
         source={require('@/assets/logo.png')}
         style={{
@@ -41,20 +54,23 @@ export function Login({ navigation }) {
         </Title>
       </Header>
       <Form>
-        <Input
-          placeholder="Email"
-          autoCapitalize="none"
-          keyboardType="email-address"
-          textContentType="emailAddress"
+        <CustomInput
+          placeholder="Insira seu email"
+          control={control}
+          name={'email'}
+          contentType="emailAddress"
+          type={'default'}
         />
-        <Input
-          placeholder="Senha"
-          secureTextEntry={true}
-          textContentType="password"
+        <CustomInput
+          placeholder="Insira sua senha"
+          control={control}
+          name={'password'}
+          contentType="password"
+          type={'default'}
         />
         <ButtonWrapper>
           <BasicButton
-            onPress={handleLogin}
+            onPress={handleSubmit(handleLogin)}
             text="Entrar"
             size="lg"
             width="100%"
@@ -69,6 +85,6 @@ export function Login({ navigation }) {
           </LinkWrapper>
         </ButtonWrapper>
       </Form>
-    </Container>
+    </KeyboardAwareScrollView>
   )
 }

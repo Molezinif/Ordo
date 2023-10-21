@@ -7,18 +7,21 @@ import React, {
 } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import api from '../services/api'
-import * as auth from '../services/auth'
-
+import { auth } from '../../firebase'
+import {
+  signInWithEmailAndPassword,
+  signOut as userSignOut
+} from 'firebase/auth'
 interface User {
-  name: string
-  email: string
+  name: string | null
+  email: string | null
 }
 
 interface AuthContextData {
   signed: boolean
   user: User | null
   loading: boolean
-  signIn(): Promise<void>
+  signIn({ email, password }): Promise<void>
   signOut(): void
 }
 
@@ -35,14 +38,10 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     async function loadStorageData() {
       try {
-        const [storagedUser, storagedToken] = await AsyncStorage.multiGet([
-          '@RNAuth:user',
-          '@RNAuth:token'
-        ])
+        const [storagedUser] = await AsyncStorage.multiGet(['@RNAuth:user'])
 
-        if (storagedUser[1] && storagedToken[1]) {
+        if (storagedUser[1]) {
           setUser(JSON.parse(storagedUser[1]))
-          api.defaults.headers.Authorization = `Bearer ${storagedToken[1]}`
         }
       } catch (error) {
         console.error('Error loading authentication data:', error)
@@ -54,18 +53,18 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     loadStorageData()
   }, [])
 
-  async function signIn() {
+  async function signIn({ email, password }) {
     try {
       setLoading(true)
-      const { data } = await auth.signIn()
-      setUser(data.user)
-
-      api.defaults.headers.Authorization = `Bearer ${data.token}`
-
-      await AsyncStorage.multiSet([
-        ['@RNAuth:user', JSON.stringify(data.user)],
-        ['@RNAuth:token', data.token]
-      ])
+      await signInWithEmailAndPassword(auth, email, password)
+      console.log(auth.currentUser)
+      const user = auth.currentUser
+      if (user)
+        setUser({
+          email: user.email,
+          name: user?.displayName
+        })
+      await AsyncStorage.multiSet([['@RNAuth:user', JSON.stringify(user)]])
       setLoading(false)
     } catch (error) {
       console.error('Error signing in:', error)
@@ -75,6 +74,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   async function signOut() {
     try {
+      userSignOut(auth)
       await AsyncStorage.multiRemove(['@RNAuth:user', '@RNAuth:token'])
       setUser(null)
     } catch (error) {

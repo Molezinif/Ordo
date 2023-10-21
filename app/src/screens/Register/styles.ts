@@ -4,9 +4,8 @@ export const Header = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-top: 32px;
   margin-bottom: 24px;
-  padding: 0 24px;
+  padding: 0px 30px;
 `
 
 export const BackButton = styled.Image`
@@ -15,9 +14,11 @@ export const BackButton = styled.Image`
 `
 
 export const Title = styled.View`
-  flex: 1;
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: flex-start;
   margin-top: 100px;
-  margin-bottom: 24px;
 `
 export const TitleText = styled.Text`
   font-size: 30px;
@@ -25,8 +26,9 @@ export const TitleText = styled.Text`
 `
 
 export const Form = styled.View`
-  flex: 1;
-  padding: 0 24px;
+  display: flex;
+  gap: 20px;
+  padding: 30px 24px;
 `
 
 export const Label = styled.Text`
@@ -50,8 +52,9 @@ export const SubmitButton = styled.Button`
   margin-top: 32px;
 `
 
-export const Container = styled.View`
+export const Container = styled.KeyboardAvoidingView`
   flex: 1;
+  flex-grow: 1;
   background-color: #fff;
 `
 export const ButtonWrapper = styled.View`
