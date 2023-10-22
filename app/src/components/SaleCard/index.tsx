@@ -13,20 +13,20 @@ import MaterialCommunityIcons from 'react-native-vector-icons/AntDesign'
 import { View } from 'native-base'
 import { CardTitle } from '../ClientCard/styles'
 
-export function Item({ item }) {
+export function Item({ item }: any) {
   return (
     <ItemContainer>
       <ItemImage />
       <ItemInfos>
         <Text>{item?.name}</Text>
-        <Text>{`R$${parseFloat(item.value).toFixed(2)} (R$${parseFloat(
+        <Text>{`R$${parseFloat(item.value)?.toFixed(2)} (R$${parseFloat(
           item.value
-        ).toFixed(2)} x ${item.amount})`}</Text>
+        )?.toFixed(2)} x ${item.amount as string})`}</Text>
       </ItemInfos>
     </ItemContainer>
   )
 }
-export function Card({ title, itens }) {
+export function Card({ title, itens }: any) {
   function calculateSubtotal(cart) {
     let subtotal = 0
 

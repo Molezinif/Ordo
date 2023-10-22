@@ -1,14 +1,12 @@
-import React, { useState } from 'react'
-import { Image } from 'react-native'
+import React from 'react'
+import { Image, View } from 'react-native'
 import { useAuth } from '@/context/auth'
 import { BasicButton } from '@/components/BasicButton'
 import { Link } from '@react-navigation/native'
 import {
   ButtonWrapper,
-  Container,
   Form,
   Header,
-  Input,
   LinkContent,
   LinkText,
   LinkWrapper,
@@ -17,16 +15,20 @@ import {
 } from './styles'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { CustomInput } from '@/components/shared/CustomFuckingInput'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 
 export function Login() {
-  const { control, handleSubmit } = useForm()
+  const {
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm()
 
   const { signIn } = useAuth()
 
   const handleLogin = async (data) => {
     console.log(data)
-    await signIn({ email: data?.email, password: data?.password })
+    await signIn({ email: data?.emailOrUser, password: data?.password })
   }
 
   return (
@@ -54,20 +56,35 @@ export function Login() {
         </Title>
       </Header>
       <Form>
-        <CustomInput
-          placeholder="Insira seu email"
-          control={control}
-          name={'email'}
-          contentType="emailAddress"
-          type={'default'}
-        />
-        <CustomInput
-          placeholder="Insira sua senha"
-          control={control}
-          name={'password'}
-          contentType="password"
-          type={'default'}
-        />
+        <View style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
+          <Controller
+            control={control}
+            render={({ field }) => (
+              <CustomInput
+                {...field}
+                placeholder="Insira seu email"
+                type="default"
+                error={errors.emailOrUser?.message}
+              />
+            )}
+            name="emailOrUser"
+            rules={{ required: 'Preencha seu usuário ou senha' }}
+          />
+          <Controller
+            control={control}
+            render={({ field }) => (
+              <CustomInput
+                {...field}
+                placeholder="Insira sua senha"
+                type="password"
+                error={errors.password?.message}
+              />
+            )}
+            name="password"
+            rules={{ required: 'Preencha sua senha' }}
+          />
+        </View>
+
         <ButtonWrapper>
           <BasicButton
             onPress={handleSubmit(handleLogin)}

@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Tabs } from './Tabs'
+import React from 'react'
 import { Settings } from '@/screens/Settings'
 import { ItensRegister } from '@/screens/ItensRegister'
 

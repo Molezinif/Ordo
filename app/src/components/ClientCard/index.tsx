@@ -4,7 +4,6 @@ import {
   CardContainer,
   CardTitle,
   ItemContainer,
-  ItemImage,
   ItemInfos,
   CardFooter
 } from './styles'
@@ -12,19 +11,19 @@ import React from 'react'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { FontAwesome } from '@expo/vector-icons'
 
-export function Item({ item }) {
+export function Item({ item }: any) {
   return (
     <ItemContainer>
       <FontAwesome name="user-circle" color={'#7C7C8A'} size={30} />
       <ItemInfos>
         <Text>{item?.name}</Text>
-        <Text>{`CPF: ${item?.personalDocument}`}</Text>
+        <Text>{`CPF: ${item?.personalDocument as string}`}</Text>
       </ItemInfos>
     </ItemContainer>
   )
 }
 
-export function ClientCard({ title, itens }) {
+export function ClientCard({ title, itens }: any) {
   return (
     <CardContainer>
       <CardTitle>{title}</CardTitle>

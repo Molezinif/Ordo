@@ -1,15 +1,20 @@
 import React from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { useForm } from 'react-hook-form'
-import { ButtonWrapper, Form, Header, Title, TitleText, Input } from './styles'
+import { useForm, Controller } from 'react-hook-form'
+import { ButtonWrapper, Form, Header, Title, TitleText } from './styles'
 import { BasicButton } from '@/components/BasicButton'
-import { CustomInput } from '@/components/shared/CustomFuckingInput'
+
 import { ItensRepository } from '@/services/Repositories/itens'
 import { useItens } from '@/context/itensContext'
+import { CustomInput } from '@/components/shared/CustomFuckingInput'
 
-export function ItensRegister({ navigation }) {
-  const { control, handleSubmit } = useForm()
+export function ItensRegister({ navigation }: any) {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm()
   const { handleGetStock } = useItens()
 
   const stockRepo = new ItensRepository()
@@ -17,11 +22,20 @@ export function ItensRegister({ navigation }) {
   const onSubmit = async (data) => {
     try {
       await stockRepo.postItens(data)
-      handleGetStock()
+      await handleGetStock()
       navigation.goBack()
     } catch (error) {
       throw new Error(JSON.stringify(error))
     }
+  }
+
+  const handleDateChange = (inputValue: string) => {
+    if (inputValue.length > 2 && inputValue.charAt(2) !== '/') {
+      inputValue = inputValue.slice(0, 2) + '/' + inputValue.slice(2)
+    }
+
+    inputValue = inputValue.slice(0, 7)
+    return inputValue
   }
 
   return (
@@ -40,19 +54,33 @@ export function ItensRegister({ navigation }) {
         </Title>
       </Header>
       <Form>
-        <CustomInput
+        <Controller
           control={control}
+          render={({ field }) => (
+            <CustomInput
+              {...field}
+              placeholder="Insira um código aqui"
+              InputTitle="Código:"
+              type="default"
+              error={errors.code?.message}
+            />
+          )}
           name="code"
-          placeholder="Insira um código aqui"
-          InputTitle="Código:"
-          type="default"
+          rules={{ required: 'Código é obrigatório' }}
         />
-        <CustomInput
+        <Controller
           control={control}
+          render={({ field }) => (
+            <CustomInput
+              {...field}
+              placeholder="Insira o nome do produto"
+              InputTitle="Nome do produto:"
+              type="default"
+              error={errors.productName?.message}
+            />
+          )}
           name="productName"
-          placeholder="Insira o nome do produto"
-          InputTitle="Nome do produto:"
-          type="default"
+          rules={{ required: 'Nome do produto é obrigatório' }}
         />
         <View
           style={{
@@ -67,12 +95,19 @@ export function ItensRegister({ navigation }) {
               width: '48.5%'
             }}
           >
-            <CustomInput
+            <Controller
               control={control}
+              render={({ field }) => (
+                <CustomInput
+                  {...field}
+                  placeholder="R$"
+                  InputTitle="Preço de custo:"
+                  type="numeric"
+                  error={errors.costPrice?.message}
+                />
+              )}
               name="costPrice"
-              placeholder="R$"
-              InputTitle="Preço de custo:"
-              type="numeric"
+              rules={{ required: 'Preço de custo obrigatório' }}
             />
           </View>
           <View
@@ -80,35 +115,66 @@ export function ItensRegister({ navigation }) {
               width: '48.5%'
             }}
           >
-            <CustomInput
+            <Controller
               control={control}
+              render={({ field }) => (
+                <CustomInput
+                  {...field}
+                  placeholder="R$"
+                  InputTitle="Preço de venda:"
+                  type="numeric"
+                  error={errors.sellingPrice?.message}
+                />
+              )}
               name="sellingPrice"
-              placeholder="R$"
-              InputTitle="Preço de venda:"
-              type="numeric"
+              rules={{ required: 'Preço de venda obrigatório' }}
             />
           </View>
         </View>
-        <CustomInput
+        <Controller
           control={control}
-          name="brand"
-          placeholder="Insira a marca do produto"
-          InputTitle="Marca:"
-          type="default"
-        />
-        <CustomInput
-          control={control}
+          render={({ field }) => (
+            <CustomInput
+              {...field}
+              onChange={(text) => {
+                const formattedDate = handleDateChange(text)
+                field.onChange(formattedDate)
+              }}
+              value={field.value}
+              placeholder="mm/aaaa"
+              InputTitle="Validade:"
+              type="numeric"
+              error={errors.expiryDate?.message}
+            />
+          )}
           name="expiryDate"
-          placeholder="dd/mm/aaaa"
-          InputTitle="Validade:"
-          type="default"
+          rules={{ required: 'Validade é obrigatória' }}
         />
-        <CustomInput
+        <Controller
           control={control}
+          render={({ field }) => (
+            <CustomInput
+              {...field}
+              placeholder="Insira a marca do produto"
+              InputTitle="Marca:"
+              type="default"
+              error={errors.brand?.message}
+            />
+          )}
+          name="brand"
+        />
+        <Controller
+          control={control}
+          render={({ field }) => (
+            <CustomInput
+              {...field}
+              defaultValue="1"
+              placeholder=""
+              InputTitle="Quantidade:"
+              type="numeric"
+            />
+          )}
           name="quantity"
-          placeholder="Insira a quantidade"
-          InputTitle="Quantidade:"
-          type="numeric"
         />
         <ButtonWrapper>
           <BasicButton

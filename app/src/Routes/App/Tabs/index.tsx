@@ -4,6 +4,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { Dashboard } from '@/screens/Dashboard'
 import { Sales } from '@/screens/Sales'
 import { Stock } from '@/screens/Stock'
+import { useItens } from '@/context/itensContext'
 
 const Tab = createBottomTabNavigator()
 
@@ -20,6 +21,8 @@ const Icons = {
 }
 
 export function Tabs() {
+  const { handleGetStock } = useItens()
+
   return (
     <Tab.Navigator
       initialRouteName="Dashboard"
@@ -48,6 +51,11 @@ export function Tabs() {
       <Tab.Screen
         name="Stock"
         component={Stock}
+        listeners={{
+          tabPress: () => {
+            handleGetStock()
+          }
+        }}
         options={{
           tabBarLabel: 'Estoque',
           tabBarIcon: ({ color, size }) => Icons.stock(color, size)

@@ -6,7 +6,6 @@ import React, {
   useMemo
 } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import api from '../services/api'
 import { auth } from '../../firebase'
 import {
   signInWithEmailAndPassword,
@@ -36,7 +35,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    async function loadStorageData() {
+    const loadStorageData = async () => {
       try {
         const [storagedUser] = await AsyncStorage.multiGet(['@RNAuth:user'])
 
@@ -50,7 +49,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     }
 
-    loadStorageData()
+    void loadStorageData()
   }, [])
 
   async function signIn({ email, password }) {
@@ -74,7 +73,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   async function signOut() {
     try {
-      userSignOut(auth)
+      await userSignOut(auth)
       await AsyncStorage.multiRemove(['@RNAuth:user', '@RNAuth:token'])
       setUser(null)
     } catch (error) {

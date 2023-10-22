@@ -39,7 +39,7 @@ export const Container = styled.View`
 
 export const ButtonWrapper = styled.View`
   display: flex;
-  padding: 10px 0;
+  margin: 24px 0;
   align-items: center;
 `
 

@@ -3,6 +3,7 @@ import { AuthProvider } from '@/context/auth'
 import { ItemProvider } from '@/context/itensContext'
 import { NavigationContainer } from '@react-navigation/native'
 import { NativeBaseProvider } from 'native-base'
+import React from 'react'
 
 export default function App() {
   return (

@@ -15,6 +15,28 @@ export const ItemContainer = styled.View`
   align-items: center;
   justify-content: space-between;
   background-color: white;
+  border-radius: 8px;
+  ${() => {
+    if (Platform.OS === 'android') {
+      return `
+        elevation: 5;
+      `
+    } else if (Platform.OS === 'ios') {
+      return `
+        shadow-color: rgba(0, 0, 0, 0.1);
+        shadow-offset: 0px 4px;
+        shadow-opacity: 1;
+        shadow-radius: 6px;
+        shadow-color: rgba(0, 0, 0, 0.06);
+        shadow-offset: 0px 2px;
+        shadow-opacity: 1;
+        shadow-radius: 4px;
+      `
+    } else {
+      return ''
+    }
+  }}
+  padding: 10px 10px;
   margin: 10px 0px;
 `
 

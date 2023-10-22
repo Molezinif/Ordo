@@ -1,11 +1,11 @@
-import React, { createContext, useContext, useMemo, useState } from 'react'
-import { useCallback } from 'react'
+import React, {
+  createContext,
+  useContext,
+  useMemo,
+  useState,
+  useCallback
+} from 'react'
 import { StockRepository } from '@/services/Repositories'
-interface User {
-  name: string | null
-  email: string | null
-}
-
 interface ItensContextData {
   stockItems: any
   handleGetStock(): any
@@ -19,12 +19,12 @@ const ItensContext = createContext<ItensContextData>({} as ItensContextData)
 
 const ItemProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [stockItems, setStockItems] = useState<any>([])
-  const stockRepo = new StockRepository()
 
   const handleGetStock = useCallback(async () => {
-    const data = await stockRepo.getStocks().then((data) => data)
-    setStockItems(data)
-    console.log('stockItems', stockItems)
+    const stockRepo = new StockRepository()
+    await stockRepo.getStocks().then((data) => {
+      setStockItems(data)
+    })
   }, [])
 
   const contextValue: ItensContextData = useMemo(
@@ -32,7 +32,7 @@ const ItemProvider: React.FC<AuthProviderProps> = ({ children }) => {
       stockItems,
       handleGetStock
     }),
-    []
+    [handleGetStock, stockItems]
   )
 
   return (

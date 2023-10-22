@@ -1,4 +1,5 @@
 {
+  "root": true,
   "env": {
     "es2021": true,
     "node": true
@@ -12,9 +13,10 @@
   "overrides": [],
   "parserOptions": {
     "ecmaVersion": "latest",
-    "sourceType": "module"
+    "sourceType": "module",
+    "project": "./app/tsconfig.json"
   },
-  "plugins": ["react", "react-native"],
+  "plugins": ["react", "react-native", "react-hooks"],
   "rules": {
     "no-console": "warn",
     "@typescript-eslint/strict-boolean-expressions": "off",
@@ -26,10 +28,14 @@
     "@typescript-eslint/no-namespace": "off",
     "@typescript-eslint/no-misused-promises": "off",
     "import/export": "off",
-    "comma-dangle": ["error", "always"],
+    "comma-dangle": "off",
     "indent": ["error", 2],
     "@typescript-eslint/consistent-type-definitions": "off",
-    "@typescript-eslint/no-explicit-any": ["error"],
-    "@typescript-eslint/no-non-null-assertion": "off"
+    "@typescript-eslint/consistent-type-assertions": "off",
+    "@typescript-eslint/no-explicit-any": ["warn"],
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }
