@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native'
+import { View } from 'react-native'
 import {
   CardView,
   CardContainer,
@@ -6,7 +6,8 @@ import {
   ItemImage,
   ItemInfos,
   LeftItemInfos,
-  RightItemInfos
+  RightItemInfos,
+  CardTextInfo
 } from './styles'
 import React from 'react'
 
@@ -17,17 +18,17 @@ export function Item({ item }: any) {
         <View style={{ display: 'flex', flexDirection: 'row', gap: 5 }}>
           <ItemImage />
           <ItemInfos>
-            <Text>{item?.name}</Text>
-            <Text>{`Código: ${item?.code as string}`}</Text>
+            <CardTextInfo>{item?.name}</CardTextInfo>
+            <CardTextInfo>{`Código: ${item?.code as string}`}</CardTextInfo>
           </ItemInfos>
         </View>
       </LeftItemInfos>
       <RightItemInfos>
         <ItemInfos>
-          <Text style={{ fontSize: 18 }}>{`R$${
+          <CardTextInfo>{`R$${
             item?.price?.toFixed(2) as string
-          }`}</Text>
-          <Text>{`qtde: ${item?.amount as string}`}</Text>
+          }`}</CardTextInfo>
+          <CardTextInfo>{`qtde: ${item?.amount as string}`}</CardTextInfo>
         </ItemInfos>
       </RightItemInfos>
     </ItemContainer>

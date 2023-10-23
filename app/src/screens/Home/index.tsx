@@ -8,8 +8,9 @@ import {
 } from './styles'
 import { BasicButton } from '@/components/BasicButton'
 import { Link } from '@react-navigation/native'
+import React from 'react'
 
-export function Home({ navigation }) {
+export function Home({ navigation }: any) {
   const handleButtonPress = () => {
     navigation.navigate('Register')
   }

@@ -13,7 +13,7 @@ const Icons = {
     <MaterialCommunityIcons name="home" color={color} size={size} />
   ),
   sales: (color, size) => (
-    <MaterialCommunityIcons name="shopping" color={color} size={size} />
+    <MaterialCommunityIcons name="cart" color={color} size={size} />
   ),
   stock: (color, size) => (
     <MaterialCommunityIcons name="package-variant" color={color} size={size} />
@@ -27,7 +27,7 @@ export function Tabs() {
     <Tab.Navigator
       initialRouteName="Dashboard"
       screenOptions={{
-        tabBarActiveTintColor: '#4FCDED',
+        tabBarActiveTintColor: '#65B3FF',
         headerShown: false,
         lazy: true
       }}

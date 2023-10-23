@@ -40,6 +40,10 @@ export const ItemContainer = styled.View`
   margin: 10px 0px;
 `
 
+export const CardTextInfo = styled.Text`
+  font-size: 16px;
+`
+
 export const CardView = styled.View`
   width: 100%;
   margin-top: 20px;

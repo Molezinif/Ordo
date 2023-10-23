@@ -1,4 +1,4 @@
-import { Pressable, Text } from 'native-base'
+import { Text } from 'native-base'
 import styled from 'styled-components/native'
 
 export const Container = styled.View`
