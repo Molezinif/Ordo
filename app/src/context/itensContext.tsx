@@ -8,6 +8,8 @@ import React, {
 import { StockRepository } from '@/services/Repositories'
 interface ItensContextData {
   stockItems: any
+  selectedItensToSell: any[]
+  setSelectedItensToSell: React.Dispatch<React.SetStateAction<any[]>>
   handleGetStock(): any
 }
 
@@ -19,6 +21,7 @@ const ItensContext = createContext<ItensContextData>({} as ItensContextData)
 
 const ItemProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [stockItems, setStockItems] = useState<any>([])
+  const [selectedItensToSell, setSelectedItensToSell] = useState<any>([])
 
   const handleGetStock = useCallback(async () => {
     const stockRepo = new StockRepository()
@@ -30,9 +33,11 @@ const ItemProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const contextValue: ItensContextData = useMemo(
     () => ({
       stockItems,
-      handleGetStock
+      handleGetStock,
+      setSelectedItensToSell,
+      selectedItensToSell
     }),
-    [handleGetStock, stockItems]
+    [handleGetStock, selectedItensToSell, stockItems]
   )
 
   return (

@@ -3,6 +3,7 @@ import { Tabs } from './Tabs'
 import React from 'react'
 import { Settings } from '@/screens/Settings'
 import { ItensRegister } from '@/screens/ItensRegister'
+import { SelectItensToSale } from '@/screens/Sales/SelectItens'
 
 export function AppRoutes() {
   const AppStack = createNativeStackNavigator()
@@ -11,6 +12,7 @@ export function AppRoutes() {
       <AppStack.Screen name="Main" component={Tabs} />
       <AppStack.Screen name="Settings" component={Settings} />
       <AppStack.Screen name="ItensRegister" component={ItensRegister} />
+      <AppStack.Screen name="SelectItensToSale" component={SelectItensToSale} />
     </AppStack.Navigator>
   )
 }

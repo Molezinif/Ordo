@@ -15,12 +15,31 @@ export const ItemContainer = styled.View`
   align-items: center;
   gap: 5px;
   background-color: white;
-  margin: 10px 0px;
+  border-radius: 8px;
+
+  ${() => {
+    if (Platform.OS === 'android') {
+      return `
+        elevation: 5;
+      `
+    } else if (Platform.OS === 'ios') {
+      return `
+        shadow-color: rgba(0, 0, 0, 0.06);
+        shadow-offset: 0px 2px;
+        shadow-opacity: 0.5;
+        shadow-radius: 4px;
+      `
+    } else {
+      return ''
+    }
+  }}
 `
 
-export const CardView = styled.View`
+export const CardView = styled.View<{ hasContent: boolean }>`
+  display: flex;
   width: 100%;
   padding: 15px;
+  gap: ${({ hasContent }) => (hasContent ? '10px' : '0px')};
   background-color: #fff;
   border-radius: 8px;
 
@@ -48,8 +67,8 @@ export const CardView = styled.View`
 
 export const ItemImage = styled.View`
   background-color: #d9d9d9;
-  min-width: 40px;
-  min-height: 40px;
+  min-width: 45px;
+  min-height: 45px;
   border-radius: 8px;
 `
 
@@ -60,9 +79,9 @@ export const CardFooter = styled.View`
   justify-content: space-between;
 `
 
-export const SubtotalText = styled.Text`
-  font-size: 17px;
-  color: #7c7c8a;
+export const FooterText = styled.Text<{ isEmpty?: boolean }>`
+  font-size: ${({ isEmpty }) => (isEmpty ? '14px' : '16px')};
+  color: ${({ isEmpty }) => (isEmpty ? '#8D8D99' : '#7c7c8a')};
 `
 
 export const ItemInfos = styled.View`

@@ -41,7 +41,7 @@ export function Tabs() {
         }}
       />
       <Tab.Screen
-        name="Register"
+        name="Sales"
         component={Sales}
         options={{
           tabBarLabel: 'Vendas',

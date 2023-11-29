@@ -1,31 +1,24 @@
+/* eslint-disable no-unreachable-loop */
 import { ClientCard } from '@/components/ClientCard'
-import { Container, ContentContainer } from './styles'
+import {
+  ButtonContainer,
+  Container,
+  ContentContainer,
+  DiscountError,
+  DiscountInfo,
+  DiscountInfoContainer,
+  DiscountListContainer
+} from './styles'
 import { Card } from '@/components/SaleCard'
-import { View, Text } from 'native-base'
+import { Modal, View } from 'native-base'
 import { CardTitle } from '@/components/ClientCard/styles'
 import { ToggleContainer } from '../Dashboard/styles'
-import { ToggleButton } from '@/components'
-
-export const mockItensToSale = [
-  {
-    id: 1,
-    name: 'Coca-Cola 600ml',
-    value: '7.50',
-    amount: 3
-  },
-  {
-    id: 2,
-    name: 'Doritos',
-    value: '1',
-    amount: 3
-  },
-  {
-    id: 3,
-    name: 'Cookie Balduco',
-    value: '100',
-    amount: 3
-  }
-]
+import { BasicButton, ToggleButton } from '@/components'
+import React, { useCallback, useEffect } from 'react'
+import { useItens } from '@/context/itensContext'
+import { SaleDetailsCard } from '@/components/SaleDetailsCard'
+import { TouchableOpacity } from 'react-native'
+import { SalesRepository } from '@/services/Repositories/sales'
 
 const mockClients = [
   {
@@ -35,11 +28,138 @@ const mockClients = [
   }
 ]
 
-export function Sales({ navigation }) {
+export function Sales({ navigation }: any) {
+  const navigateToSelectItens = () => {
+    navigation.navigate('SelectItensToSale')
+  }
+
+  const [showModal, setShowModal] = React.useState(false)
+
+  const [installment, setInstallment] = React.useState(1)
+
+  const { selectedItensToSell, setSelectedItensToSell } = useItens()
+
+  const toggleRef = React.useRef<any>(null)
+
+  const discount = 0
+
+  function calculateTotal(cart) {
+    let subtotal = 0
+
+    if (cart?.length === 0) return subtotal
+
+    for (const item of cart) {
+      const itemValue = parseFloat(item?.sellingPrice)
+      const selectedQuantity = item?.selectedQuantity
+      subtotal += itemValue * selectedQuantity
+    }
+
+    const total = subtotal - discount
+
+    return total.toFixed(2)
+  }
+
+  const getDiscountList = () => {
+    const result = [] as any
+    const maxInstallments = 10
+    for (let i = 1; i < maxInstallments; i++) {
+      const value = +calculateTotal(selectedItensToSell) / i
+      if (value !== 0) {
+        result.push({
+          installment: i + 1,
+          value
+        })
+      }
+    }
+    return result
+  }
+
+  const renderDiscountList = () => {
+    const discountList = getDiscountList()
+    return (
+      <DiscountListContainer>
+        {discountList?.length ? (
+          discountList.map((item) => (
+            <TouchableOpacity
+              key={item.installment}
+              onPress={() => {
+                setInstallment(item.installment)
+                setShowModal(false)
+              }}
+            >
+              <DiscountInfoContainer class="discountInfoContainer">
+                <DiscountInfo>{`${item?.installment as string}X`}</DiscountInfo>
+                <DiscountInfo>{`R$${
+                  item?.value.toFixed(2) as string
+                }`}</DiscountInfo>
+              </DiscountInfoContainer>
+            </TouchableOpacity>
+          ))
+        ) : (
+          <DiscountInfoContainer class="discountInfoContainer">
+            <DiscountError>
+              Selecione pelo menos um item para ver as parcelas disponíveis
+              desta venda
+            </DiscountError>
+          </DiscountInfoContainer>
+        )}
+      </DiscountListContainer>
+    )
+  }
+
+  const renderSaleDetails = useCallback(() => {
+    return (
+      <>
+        <CardTitle>Detalhes da venda</CardTitle>
+        <SaleDetailsCard
+          details={{
+            installment,
+            discount,
+            total: calculateTotal(selectedItensToSell)
+          }}
+        />
+      </>
+    )
+  }, [installment, selectedItensToSell])
+
+  const salesRepo = new SalesRepository()
+
+  const handleFinishSale = async () => {
+    if (selectedItensToSell.length === 0) return
+    const sale = {
+      client: mockClients[0],
+      itens: selectedItensToSell,
+      installment,
+      discount,
+      total: calculateTotal(selectedItensToSell)
+    }
+
+    await salesRepo.postCurrentSale(sale)
+
+    setSelectedItensToSell([])
+    navigation.navigate('Dashboard')
+  }
+
+  useEffect(() => {
+    if (selectedItensToSell.length === 0) {
+      setInstallment(1)
+      toggleRef?.current?.selectOption('optionOne')
+    }
+  }, [selectedItensToSell])
+
   return (
     <Container>
       <ContentContainer>
-        <Card title={'Itens'} itens={mockItensToSale} />
+        <Card
+          title={'Itens'}
+          itens={selectedItensToSell}
+          onPress={navigateToSelectItens}
+          deleteItemCallBack={(code?: string) => {
+            setSelectedItensToSell(
+              selectedItensToSell.filter((item) => item.code !== code)
+            )
+          }}
+        />
         <ClientCard title={'Cliente'} itens={mockClients} />
         <View
           style={{
@@ -50,12 +170,43 @@ export function Sales({ navigation }) {
           <CardTitle>Pagamento Parcelado?</CardTitle>
           <ToggleContainer>
             <ToggleButton
-              optionOneOnPress={() => {}}
-              optionTwoOnPress={() => {}}
-              optionOneText="Sim"
-              optionTwoText="Não"
+              ref={toggleRef}
+              optionOneOnPress={() => {
+                setInstallment(1)
+              }}
+              optionTwoOnPress={() => {
+                setShowModal(true)
+              }}
+              optionOneText="Não"
+              optionTwoText="Sim"
             />
           </ToggleContainer>
+
+          <Modal
+            isOpen={showModal}
+            onClose={() => {
+              setShowModal(false)
+              setInstallment(1)
+              toggleRef?.current?.selectOption('optionOne')
+            }}
+          >
+            <Modal.Content maxWidth="600px">
+              <Modal.CloseButton />
+              <Modal.Header>Parcelas</Modal.Header>
+              <Modal.Body>{renderDiscountList()}</Modal.Body>
+            </Modal.Content>
+          </Modal>
+          {renderSaleDetails()}
+          <ButtonContainer>
+            <BasicButton
+              onPress={async () => {
+                await handleFinishSale()
+              }}
+              text="Finalizar venda"
+              size="md"
+              width="50%"
+            />
+          </ButtonContainer>
         </View>
       </ContentContainer>
     </Container>

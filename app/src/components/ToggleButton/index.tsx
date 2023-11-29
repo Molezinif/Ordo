@@ -1,4 +1,9 @@
-import React, { useState } from 'react'
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState
+} from 'react'
 import { Container, OptionOne, OptionText, OptionTwo } from './styles'
 
 interface Props {
@@ -8,15 +13,21 @@ interface Props {
   optionTwoOnPress?: () => void
 }
 
-export function ToggleButton({
-  optionOneText,
-  optionTwoText,
-  optionOneOnPress,
-  optionTwoOnPress
-}: Props) {
+export const ToggleButton = forwardRef(function ToggleButton(
+  { optionOneText, optionTwoText, optionOneOnPress, optionTwoOnPress }: Props,
+  ref: any
+) {
   const [selectedOption, setSelectedOption] = useState<
     'optionOne' | 'optionTwo'
   >('optionOne')
+
+  useImperativeHandle(ref, () => {
+    return {
+      selectOption: (option: 'optionOne' | 'optionTwo') => {
+        setSelectedOption(option)
+      }
+    }
+  })
 
   const onPressOne = () => {
     setSelectedOption('optionOne')
@@ -27,6 +38,14 @@ export function ToggleButton({
     setSelectedOption('optionTwo')
     if (optionTwoOnPress) optionTwoOnPress()
   }
+
+  useEffect(() => {
+    if (ref?.current?.selectOption) {
+      ref.current.selectOption = (option: 'optionOne' | 'optionTwo') => {
+        setSelectedOption(option)
+      }
+    }
+  }, [ref])
 
   const isOne = selectedOption === 'optionOne'
   const isTwo = selectedOption === 'optionTwo'
@@ -41,4 +60,4 @@ export function ToggleButton({
       </OptionTwo>
     </Container>
   )
-}
+})

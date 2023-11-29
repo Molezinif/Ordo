@@ -19,7 +19,12 @@ export function Stock({ navigation }: any) {
     <Container>
       <Text style={{ fontSize: 22, fontWeight: '400' }}>Estoque</Text>
       {stockItems?.length ? (
-        <StockCard itens={stockItems} />
+        <StockCard
+          itens={stockItems}
+          navigateCallBack={() => {
+            console.log('oi')
+          }}
+        />
       ) : (
         <View
           style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
