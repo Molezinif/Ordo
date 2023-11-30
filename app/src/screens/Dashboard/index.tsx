@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Text, Heading, Avatar } from 'native-base'
 import {
   Container,
@@ -8,13 +9,18 @@ import {
 import { ToggleButton } from '@/components/ToggleButton'
 import { mockAvatarImage } from '@/constants/dashboard'
 import { Productivity } from './Sections/Productivity'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Overview } from './Sections/Overview'
 import { TouchableOpacity } from 'react-native'
+import { HistoryCard } from '@/components/HistoryCard'
+import { SalesRepository } from '@/services/Repositories'
+import { useItens } from '@/context/itensContext'
 
 export function Dashboard({ navigation }: any) {
   const [isProductivityScreen, setIsProductivityScreen] = useState(true)
   const [isOverviewScreen, setIsOverviewScreen] = useState(false)
+
+  const { salesHistory, handleGetSalesHistory } = useItens()
 
   const handleToggleScreen = () => {
     setIsProductivityScreen(!isProductivityScreen)
@@ -24,6 +30,10 @@ export function Dashboard({ navigation }: any) {
   const handleAvatarPress = () => {
     navigation.navigate('Settings')
   }
+
+  useEffect(() => {
+    handleGetSalesHistory()
+  }, [handleGetSalesHistory])
 
   return (
     <Container>
@@ -46,7 +56,8 @@ export function Dashboard({ navigation }: any) {
         {'Olá,\nUsuário!👋'}
       </Heading>
       <MainContentContainer>
-        <ToggleContainer>
+        <HistoryCard historyItens={salesHistory} />
+        {/* <ToggleContainer>
           <ToggleButton
             optionOneOnPress={handleToggleScreen}
             optionTwoOnPress={handleToggleScreen}
@@ -55,7 +66,7 @@ export function Dashboard({ navigation }: any) {
           />
         </ToggleContainer>
         {isProductivityScreen && <Productivity />}
-        {isOverviewScreen && <Overview />}
+        {isOverviewScreen && <Overview />} */}
       </MainContentContainer>
     </Container>
   )

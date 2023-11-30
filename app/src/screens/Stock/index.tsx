@@ -1,5 +1,10 @@
 import { useItens } from '@/context/itensContext'
-import { Container, FloatButton } from './styles'
+import {
+  Container,
+  ContentContainer,
+  FloatButton,
+  StockContentContainer
+} from './styles'
 import { StockCard } from '@/components/StockCard'
 import React, { useEffect } from 'react'
 import { ActivityIndicator, Text, View } from 'react-native'
@@ -17,21 +22,30 @@ export function Stock({ navigation }: any) {
 
   return (
     <Container>
-      <Text style={{ fontSize: 22, fontWeight: '400' }}>Estoque</Text>
-      {stockItems?.length ? (
-        <StockCard
-          itens={stockItems}
-          navigateCallBack={() => {
-            console.log('oi')
-          }}
-        />
-      ) : (
-        <View
-          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-        >
-          <ActivityIndicator size="large" color="#00b7ff" />
-        </View>
-      )}
+      <ContentContainer>
+        <Text style={{ fontSize: 22, fontWeight: '400' }}>Estoque</Text>
+        <StockContentContainer>
+          {stockItems?.length ? (
+            <StockCard
+              itens={stockItems}
+              navigateCallBack={() => {
+                console.log('oi')
+              }}
+            />
+          ) : (
+            <View
+              style={{
+                position: 'absolute',
+                top: 250,
+                left: 150
+              }}
+            >
+              <ActivityIndicator size="large" color="#00b7ff" />
+            </View>
+          )}
+        </StockContentContainer>
+      </ContentContainer>
+
       <FloatButton
         onPress={() => {
           navigation.navigate('ItensRegister')

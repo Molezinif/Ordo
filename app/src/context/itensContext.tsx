@@ -5,12 +5,15 @@ import React, {
   useState,
   useCallback
 } from 'react'
-import { StockRepository } from '@/services/Repositories'
+import { SalesRepository, StockRepository } from '@/services/Repositories'
 interface ItensContextData {
   stockItems: any
   selectedItensToSell: any[]
   setSelectedItensToSell: React.Dispatch<React.SetStateAction<any[]>>
+  salesHistory: any[]
+  setSalesHistory: React.Dispatch<React.SetStateAction<any[]>>
   handleGetStock(): any
+  handleGetSalesHistory(): any
 }
 
 interface AuthProviderProps {
@@ -22,6 +25,7 @@ const ItensContext = createContext<ItensContextData>({} as ItensContextData)
 const ItemProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [stockItems, setStockItems] = useState<any>([])
   const [selectedItensToSell, setSelectedItensToSell] = useState<any>([])
+  const [salesHistory, setSalesHistory] = useState<any>([])
 
   const handleGetStock = useCallback(async () => {
     const stockRepo = new StockRepository()
@@ -30,14 +34,31 @@ const ItemProvider: React.FC<AuthProviderProps> = ({ children }) => {
     })
   }, [])
 
+  const handleGetSalesHistory = useCallback(async () => {
+    const salesRepo = new SalesRepository()
+    await salesRepo.getSalesHistory().then((data) => {
+      console.log('data', data)
+      setSalesHistory(data)
+    })
+  }, [])
+
   const contextValue: ItensContextData = useMemo(
     () => ({
       stockItems,
       handleGetStock,
       setSelectedItensToSell,
-      selectedItensToSell
+      selectedItensToSell,
+      salesHistory,
+      setSalesHistory,
+      handleGetSalesHistory
     }),
-    [handleGetStock, selectedItensToSell, stockItems]
+    [
+      handleGetSalesHistory,
+      handleGetStock,
+      salesHistory,
+      selectedItensToSell,
+      stockItems
+    ]
   )
 
   return (

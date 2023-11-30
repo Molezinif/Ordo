@@ -1,7 +1,7 @@
 import { useItens } from '@/context/itensContext'
 import React, { useEffect } from 'react'
 import { ActivityIndicator, Text, View } from 'react-native'
-import { Container, ContentContainer } from './styles'
+import { Container, ContentContainer, StockContentContainer } from './styles'
 import { SelectItensFromStockCard } from '@/components/SelectItensFromStockCard'
 
 export function SelectItensToSale({ navigation }: any) {
@@ -18,23 +18,29 @@ export function SelectItensToSale({ navigation }: any) {
     <Container>
       <ContentContainer>
         <Text style={{ fontSize: 18, fontWeight: '300' }}>
-          Selecione um ou mais itens
+          Selecione um item
         </Text>
-        {stockItems?.length ? (
-          <SelectItensFromStockCard
-            itens={stockItems}
-            isItensSelectable
-            navigateCallBack={() => {
-              navigation.navigate('Main')
-            }}
-          />
-        ) : (
-          <View
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-          >
-            <ActivityIndicator size="large" color="#00b7ff" />
-          </View>
-        )}
+        <StockContentContainer>
+          {stockItems?.length ? (
+            <SelectItensFromStockCard
+              itens={stockItems}
+              isItensSelectable
+              navigateCallBack={() => {
+                navigation.navigate('Main')
+              }}
+            />
+          ) : (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <ActivityIndicator size="large" color="#00b7ff" />
+            </View>
+          )}
+        </StockContentContainer>
       </ContentContainer>
     </Container>
   )

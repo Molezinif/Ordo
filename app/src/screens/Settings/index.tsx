@@ -2,9 +2,10 @@ import { Text } from 'native-base'
 import { Container, TopBarContainer } from './styles'
 import { Button } from 'react-native'
 import { useAuth } from '@/context/auth'
+import React from 'react'
 
 export function Settings() {
-  const { user, signOut } = useAuth()
+  const { signOut } = useAuth()
   const handleSignOut = () => {
     signOut()
   }
@@ -12,9 +13,9 @@ export function Settings() {
     <Container>
       <TopBarContainer>
         <Text fontSize={20} bold>
-          Settings
+          Configurações
         </Text>
-        <Button title="Sign Out" onPress={handleSignOut} />
+        <Button title="Sair" onPress={handleSignOut} />
       </TopBarContainer>
     </Container>
   )

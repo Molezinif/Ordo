@@ -21,7 +21,7 @@ const Icons = {
 }
 
 export function Tabs() {
-  const { handleGetStock } = useItens()
+  const { handleGetStock, handleGetSalesHistory } = useItens()
 
   return (
     <Tab.Navigator
@@ -29,7 +29,13 @@ export function Tabs() {
       screenOptions={{
         tabBarActiveTintColor: '#65B3FF',
         headerShown: false,
-        lazy: true
+        lazy: true,
+        tabBarStyle: {
+          display: 'flex',
+          width: '100%',
+          backgroundColor: 'white',
+          borderTopWidth: 0
+        }
       }}
     >
       <Tab.Screen
@@ -38,6 +44,11 @@ export function Tabs() {
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({ color, size }) => Icons.dashboard(color, size)
+        }}
+        listeners={{
+          tabPress: () => {
+            handleGetSalesHistory()
+          }
         }}
       />
       <Tab.Screen

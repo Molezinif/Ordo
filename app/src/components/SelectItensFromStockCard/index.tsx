@@ -42,15 +42,13 @@ export function Item({ item, isItensSelectable, checkBoxDisplay }: any) {
         </View>
       </LeftItemInfos>
       <RightItemInfos>
-        <ItemInfos>
-          <CardTextInfo textSize={'18px'}>{`R$${
-            item?.price?.toFixed(2) as string
-          }`}</CardTextInfo>
-          <CardTextInfo>
-            {`qtde: `}
-            <CardTextInfo color={'#0ECD21'}>{item?.amount}</CardTextInfo>
-          </CardTextInfo>
-        </ItemInfos>
+        <CardTextInfo textSize={'18px'}>{`R$${
+          item?.price?.toFixed(2) as string
+        }`}</CardTextInfo>
+        <CardTextInfo>
+          {`qtde: `}
+          <CardTextInfo color={'#0ECD21'}>{item?.amount}</CardTextInfo>
+        </CardTextInfo>
       </RightItemInfos>
     </ItemContainer>
   )

@@ -24,12 +24,13 @@ export function Item({ item }: any) {
         </View>
       </LeftItemInfos>
       <RightItemInfos>
-        <ItemInfos>
-          <CardTextInfo>{`R$${
-            item?.price?.toFixed(2) as string
-          }`}</CardTextInfo>
-          <CardTextInfo>{`qtde: ${item?.amount as string}`}</CardTextInfo>
-        </ItemInfos>
+        <CardTextInfo textSize={'18px'}>{`R$${
+          item?.price?.toFixed(2) as string
+        }`}</CardTextInfo>
+        <CardTextInfo>
+          {`qtde: `}
+          <CardTextInfo color={'#0ECD21'}>{item?.amount}</CardTextInfo>
+        </CardTextInfo>
       </RightItemInfos>
     </ItemContainer>
   )

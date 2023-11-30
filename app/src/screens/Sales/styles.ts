@@ -9,7 +9,7 @@ export const ContentContainer = styled.View`
   display: flex;
   margin-top: 80px;
   margin-bottom: 100px;
-  padding: 0px 25px;
+  padding: 0px 22px;
   gap: 30px;
 `
 

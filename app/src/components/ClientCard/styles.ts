@@ -5,7 +5,7 @@ export const CardContainer = styled.View`
   display: flex;
   width: 100%;
   background-color: white;
-  gap: 4px;
+  gap: 8px;
 `
 
 export const ItemContainer = styled.View`
@@ -20,7 +20,7 @@ export const ItemContainer = styled.View`
 
 export const CardView = styled.View`
   width: 100%;
-  padding: 15px;
+  padding: 6px 10px;
   align-items: center;
   background-color: #fff;
   border-radius: 8px;
@@ -55,7 +55,8 @@ export const ItemImage = styled.View`
 `
 
 export const CardTitle = styled.Text`
-  font-size: 16px;
+  font-size: 18px;
+  font-weight: 400;
   color: #333333;
 `
 

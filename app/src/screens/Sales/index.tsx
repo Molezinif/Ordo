@@ -17,8 +17,9 @@ import { BasicButton, ToggleButton } from '@/components'
 import React, { useCallback, useEffect } from 'react'
 import { useItens } from '@/context/itensContext'
 import { SaleDetailsCard } from '@/components/SaleDetailsCard'
-import { TouchableOpacity } from 'react-native'
+import { TouchableOpacity, Text } from 'react-native'
 import { SalesRepository } from '@/services/Repositories/sales'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const mockClients = [
   {
@@ -35,9 +36,12 @@ export function Sales({ navigation }: any) {
 
   const [showModal, setShowModal] = React.useState(false)
 
+  const [showErrorModal, setShowErrorModal] = React.useState(false)
+
   const [installment, setInstallment] = React.useState(1)
 
-  const { selectedItensToSell, setSelectedItensToSell } = useItens()
+  const { selectedItensToSell, setSelectedItensToSell, handleGetSalesHistory } =
+    useItens()
 
   const toggleRef = React.useRef<any>(null)
 
@@ -125,7 +129,10 @@ export function Sales({ navigation }: any) {
   const salesRepo = new SalesRepository()
 
   const handleFinishSale = async () => {
-    if (selectedItensToSell.length === 0) return
+    if (selectedItensToSell.length === 0) {
+      setShowErrorModal(true)
+      return
+    }
     const sale = {
       client: mockClients[0],
       itens: selectedItensToSell,
@@ -135,6 +142,8 @@ export function Sales({ navigation }: any) {
     }
 
     await salesRepo.postCurrentSale(sale)
+
+    await handleGetSalesHistory()
 
     setSelectedItensToSell([])
     navigation.navigate('Dashboard')
@@ -192,11 +201,44 @@ export function Sales({ navigation }: any) {
           >
             <Modal.Content maxWidth="600px">
               <Modal.CloseButton />
-              <Modal.Header>Parcelas</Modal.Header>
+              <Modal.Header>Selecione uma parcela</Modal.Header>
               <Modal.Body>{renderDiscountList()}</Modal.Body>
             </Modal.Content>
           </Modal>
           {renderSaleDetails()}
+
+          <Modal
+            isOpen={showErrorModal}
+            onClose={() => {
+              setShowErrorModal(false)
+            }}
+          >
+            <Modal.Content maxWidth="600px">
+              <Modal.CloseButton />
+              <Modal.Body>
+                <MaterialCommunityIcons />
+                <View
+                  style={{
+                    display: 'flex',
+                    width: '100%',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: 20,
+                    gap: 20
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    name="alert"
+                    size={60}
+                    color="#F3BE1D"
+                  />
+                  <Text style={{ textAlign: 'center' }}>
+                    Selecione ao menos um item para finalizar a venda
+                  </Text>
+                </View>
+              </Modal.Body>
+            </Modal.Content>
+          </Modal>
           <ButtonContainer>
             <BasicButton
               onPress={async () => {

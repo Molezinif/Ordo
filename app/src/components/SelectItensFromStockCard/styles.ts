@@ -69,6 +69,6 @@ export const LeftItemInfos = styled.View`
 export const RightItemInfos = styled.View`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
+  align-items: flex-end;
+  justify-content: flex-end;
 `
