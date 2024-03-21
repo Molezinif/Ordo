@@ -20,9 +20,7 @@ export const ItemContainer = styled.View`
 
   ${() => {
     if (Platform.OS === 'android') {
-      return `
-        elevation: 5;
-      `
+      return ``
     } else if (Platform.OS === 'ios') {
       return `
         shadow-color: rgba(0, 0, 0, 0.06);
@@ -47,7 +45,8 @@ export const CardView = styled.View<{ hasContent: boolean }>`
   ${() => {
     if (Platform.OS === 'android') {
       return `
-        elevation: 5;
+        elevation: 0.8;
+        shadowColor: '#52006A';
       `
     } else if (Platform.OS === 'ios') {
       return `

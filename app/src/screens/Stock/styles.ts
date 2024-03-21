@@ -1,8 +1,10 @@
 import styled from 'styled-components/native'
+import { Platform } from 'react-native'
 
 export const Container = styled.SafeAreaView`
   flex: 1;
   background-color: white;
+  padding-top: ${Platform.OS === 'android' ? 25 : 0}px;
 `
 
 export const StockContentContainer = styled.ScrollView`

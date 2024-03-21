@@ -28,7 +28,8 @@ export const CardView = styled.View`
   ${() => {
     if (Platform.OS === 'android') {
       return `
-        elevation: 5;
+      elevation: 0.8;
+      shadowColor: '#52006A';
       `
     } else if (Platform.OS === 'ios') {
       return `
