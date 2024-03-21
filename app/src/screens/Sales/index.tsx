@@ -18,7 +18,7 @@ import React, { useCallback, useEffect } from 'react'
 import { useItens } from '@/context/itensContext'
 import { SaleDetailsCard } from '@/components/SaleDetailsCard'
 import { TouchableOpacity, Text } from 'react-native'
-import { SalesRepository } from '@/services/Repositories/sales'
+import { SalesRepository } from '@/services/repositories/sales'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const mockClients = [

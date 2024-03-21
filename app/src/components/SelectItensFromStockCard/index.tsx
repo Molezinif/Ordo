@@ -70,7 +70,6 @@ export function SelectItensFromStockCard({
       )
       const selectedQuantity = selectedItem?.selectedQuantity || 0
 
-      // Adicionando a condição de filtro
       return (
         item.quantity > selectedQuantity || item.quantity !== selectedQuantity
       )
@@ -80,7 +79,6 @@ export function SelectItensFromStockCard({
   }, [itens, selectedItensToSell])
 
   const renderItens = useCallback(() => {
-    console.log(JSON.stringify(stockItens, null, 2))
     return stockItens.map((item) => {
       return (
         <TouchableOpacity

@@ -5,15 +5,21 @@ import React, {
   useState,
   useCallback
 } from 'react'
-import { SalesRepository, StockRepository } from '@/services/Repositories'
+import {
+  SalesRepository,
+  getStock,
+  queryStockSearch
+} from '@/services/repositories'
 interface ItensContextData {
   stockItems: any
   selectedItensToSell: any[]
   setSelectedItensToSell: React.Dispatch<React.SetStateAction<any[]>>
   salesHistory: any[]
   setSalesHistory: React.Dispatch<React.SetStateAction<any[]>>
+  notFoundProducts: boolean
   handleGetStock(): any
   handleGetSalesHistory(): any
+  handleSearchStock(search: string): any
 }
 
 interface AuthProviderProps {
@@ -26,18 +32,28 @@ const ItemProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [stockItems, setStockItems] = useState<any>([])
   const [selectedItensToSell, setSelectedItensToSell] = useState<any>([])
   const [salesHistory, setSalesHistory] = useState<any>([])
+  const [notFoundProducts, setNotFoundProducts] = useState<boolean>(false)
 
   const handleGetStock = useCallback(async () => {
-    const stockRepo = new StockRepository()
-    await stockRepo.getStocks().then((data) => {
+    await getStock().then((data) => {
       setStockItems(data)
     })
   }, [])
 
+  const handleSearchStock = async (search: string) => {
+    await queryStockSearch(search).then((data) => {
+      if (data.length === 0) {
+        setNotFoundProducts(true)
+        return
+      }
+      setStockItems(data)
+      setNotFoundProducts(false)
+    })
+  }
+
   const handleGetSalesHistory = useCallback(async () => {
     const salesRepo = new SalesRepository()
     await salesRepo.getSalesHistory().then((data) => {
-      console.log('data', data)
       setSalesHistory(data)
     })
   }, [])
@@ -50,14 +66,18 @@ const ItemProvider: React.FC<AuthProviderProps> = ({ children }) => {
       selectedItensToSell,
       salesHistory,
       setSalesHistory,
-      handleGetSalesHistory
+      handleGetSalesHistory,
+      handleSearchStock,
+      notFoundProducts
     }),
     [
       handleGetSalesHistory,
       handleGetStock,
       salesHistory,
       selectedItensToSell,
-      stockItems
+      stockItems,
+      handleSearchStock,
+      notFoundProducts
     ]
   )
 

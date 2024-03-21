@@ -2,17 +2,22 @@ import React, { forwardRef } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import { Input } from './styles'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import { Icon } from 'native-base'
+import { Input as InputBase } from 'native-base'
+import { MaterialIcons } from '@expo/vector-icons'
 
 interface CustomInputProps {
   placeholder: string
   InputTitle?: string
   type: string
   name: string
-  contentType?: string
+
   value: string
   onChange: any
   error?: any
   defaultValue?: string
+  borderRadius?: string
+  icon?: any
 }
 
 interface PasswordIconProps {
@@ -55,9 +60,10 @@ export const CustomInput = forwardRef(function CustomInputComponent(
     type,
     value,
     onChange,
-    contentType,
+    borderRadius,
     error,
-    defaultValue
+    defaultValue,
+    icon
   } = props
 
   const [showPassword, setShowPassword] = React.useState(false)
@@ -93,16 +99,16 @@ export const CustomInput = forwardRef(function CustomInputComponent(
         </View>
       ) : null}
       <Input
+        borderRadius={borderRadius ?? "8"}
         placeholder={placeholder}
+        bgColor={'white'}
+        InputLeftElement={icon}
+        error={error}
         value={value}
         onChangeText={onChange}
         autoCapitalize="none"
-        keyboardType={type === 'password' ? 'default' : type}
-        textContentType={contentType ?? 'none'}
         secureTextEntry={type === 'password' && !showPassword}
-        error={error}
         defaultValue={defaultValue ?? ''}
-        ref={ref}
       />
       {type === 'password' ? (
         <PasswordIcon

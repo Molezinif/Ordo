@@ -4,9 +4,9 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useForm, Controller } from 'react-hook-form'
 import { ButtonWrapper, Form, Header, Title, TitleText } from './styles'
 import { BasicButton } from '@/components/BasicButton'
-import { ItensRepository } from '@/services/Repositories/itens'
 import { useItens } from '@/context/itensContext'
 import { CustomInput } from '@/components/shared/CustomFuckingInput'
+import { registerProduct } from '@/services/repositories/itens'
 
 export function ItensRegister({ navigation }: any) {
   const {
@@ -16,11 +16,9 @@ export function ItensRegister({ navigation }: any) {
   } = useForm()
   const { handleGetStock } = useItens()
 
-  const stockRepo = new ItensRepository()
-
   const onSubmit = async (data) => {
     try {
-      await stockRepo.postItens(data)
+      await registerProduct(data)
       await handleGetStock()
       navigation.goBack()
     } catch (error) {

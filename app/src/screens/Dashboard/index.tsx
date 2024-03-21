@@ -13,7 +13,7 @@ import React, { useEffect, useState } from 'react'
 import { Overview } from './Sections/Overview'
 import { TouchableOpacity } from 'react-native'
 import { HistoryCard } from '@/components/HistoryCard'
-import { SalesRepository } from '@/services/Repositories'
+import { SalesRepository } from '@/services/repositories'
 import { useItens } from '@/context/itensContext'
 
 export function Dashboard({ navigation }: any) {
@@ -57,16 +57,6 @@ export function Dashboard({ navigation }: any) {
       </Heading>
       <MainContentContainer>
         <HistoryCard historyItens={salesHistory} />
-        {/* <ToggleContainer>
-          <ToggleButton
-            optionOneOnPress={handleToggleScreen}
-            optionTwoOnPress={handleToggleScreen}
-            optionOneText="Produtividade"
-            optionTwoText="Overview"
-          />
-        </ToggleContainer>
-        {isProductivityScreen && <Productivity />}
-        {isOverviewScreen && <Overview />} */}
       </MainContentContainer>
     </Container>
   )

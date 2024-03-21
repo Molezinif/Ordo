@@ -27,7 +27,6 @@ export function Login() {
   const { signIn } = useAuth()
 
   const handleLogin = async (data) => {
-    console.log(data)
     await signIn({ email: data?.emailOrUser, password: data?.password })
   }
 

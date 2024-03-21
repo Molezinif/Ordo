@@ -1,11 +1,13 @@
 import { collection, addDoc, query, orderBy, getDocs } from 'firebase/firestore'
 import { db } from '@/../firebase'
+import { randomUUID } from '@/utils/getRandomUUID'
 
 export class SalesRepository {
   async postCurrentSale(data): Promise<any> {
     const SalesCollection = collection(db, 'sales')
 
     const formattedData = {
+      saleHistoryUUID: randomUUID(),
       ...data,
       total: Number(data?.total),
       createdAt: new Date().toISOString()

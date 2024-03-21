@@ -1,10 +1,14 @@
 import { collection, addDoc } from 'firebase/firestore'
 import { db } from '@/../firebase'
+import 'react-native-get-random-values'
+import { randomUUID } from '@/utils/getRandomUUID'
 
-export class ItensRepository {
-  async postItens(data): Promise<any> {
-    const StockCollection = collection(db, 'stock')
+export const registerProduct = async (data): Promise<any> => {
+  try {
+    console.log('data', data)
+
     const formattedData = {
+      productUUID: randomUUID(),
       productName: data?.productName,
       code: data?.code ?? null,
       quantity: data?.quantity ? Number(data?.quantity) : 1,
@@ -18,9 +22,12 @@ export class ItensRepository {
       createdAt: new Date(),
       updatedAt: new Date()
     }
+    console.log('formattedData', formattedData)
 
-    await addDoc(StockCollection, formattedData)
+    const StockCollection = collection(db, 'stock')
 
-    return true
+    return await addDoc(StockCollection, formattedData)
+  } catch (e) {
+    console.log(e)
   }
 }

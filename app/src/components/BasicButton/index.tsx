@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from 'native-base'
+import { Button, Icon } from 'native-base'
 
 interface Props {
   onPress: (...args: any[]) => void
@@ -7,6 +7,7 @@ interface Props {
   width?: string
   height?: string
   size?: string
+  fontSize?: number
   text: string
 }
 
@@ -15,17 +16,20 @@ const BasicButton = ({
   onPress,
   disabled,
   width,
-  size
+  fontSize,
+  size,
+  ...props
 }: Props): JSX.Element => {
   return (
     <Button
       onPress={onPress}
       style={{ backgroundColor: '#65B3FF' }}
       size={size}
-      _text={{ fontSize: 16, fontWeight: 'bold' }}
+      _text={{ fontSize: fontSize ?? 16, fontWeight: 'bold' }}
       width={width}
       borderRadius={10}
       disabled={disabled}
+      {...props}
     >
       {text}
     </Button>

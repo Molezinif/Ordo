@@ -56,7 +56,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       setLoading(true)
       await signInWithEmailAndPassword(auth, email, password)
-      console.log(auth.currentUser)
       const user = auth.currentUser
       if (user)
         setUser({

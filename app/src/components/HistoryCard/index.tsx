@@ -52,7 +52,7 @@ export function HistoryCard({ historyItens }: any) {
               ).toLocaleDateString()
               return (
                 <Item
-                  key={item.code}
+                  key={item.saleHistoryUUID}
                   item={{
                     client: item?.client.name,
                     saleDate: formattedDate,
