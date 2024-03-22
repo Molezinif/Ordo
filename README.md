@@ -38,7 +38,7 @@ npm start
   <tr>
     <td align="center">
       <a href="https://github.com/Molezinif">
-        <img src="https://github.com/Molezinif.png" width="100px;" alt="Foto de Tati Alves no GitHub"/><br>
+        <img src="https://github.com/Molezinif.png" width="100px;" alt="Foto de Gabriel Molezini no GitHub"/><br>
         <sub>
           <b>Gabriel Molezini</b>
         </sub>
@@ -46,23 +46,15 @@ npm start
     </td>
     <td align="center">
       <a href="https://github.com/victorMartinsFranchi">
-        <img src="https://github.com/victorMartinsFranchi.png" width="100px;" alt="Foto de Tati Alves no GitHub"/><br>
+        <img src="https://github.com/victorMartinsFranchi.png" width="100px;" alt="Foto de Victor Franchi no GitHub"/><br>
         <sub>
           <b>Victor Franchi</b>
         </sub>
       </a>
     </td>
     <td align="center">
-      <a href="https://github.com/Victorevi">
-        <img src="https://github.com/Victorevi.png" width="100px;" alt="Foto de Tati Alves no GitHub"/><br>
-        <sub>
-          <b>Victor Gonçalves</b>
-        </sub>
-      </a>
-    </td>
-    <td align="center">
       <a href="https://github.com/Bilator3000">
-        <img src="https://github.com/Bilator3000.png" width="100px;" alt="Foto de Tati Alves no GitHub"/><br>
+        <img src="https://github.com/Bilator3000.png" width="100px;" alt="Foto de Matheus Lima no GitHub"/><br>
         <sub>
           <b>Matheus Lima</b>
         </sub>
