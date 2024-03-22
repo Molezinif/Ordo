@@ -13,99 +13,124 @@ export function Tabs() {
   const { handleGetStock, handleGetSalesHistory } = useItens()
   // shadow-offset: 0px 2px;shadow-opacity: 0.5; shadow-radius: 4px;
   return (
-    <Tab.Navigator
-      initialRouteName="Dashboard"
-      screenOptions={({ route }) => ({
-        tabBarHideOnKeyboard: true,
-        tabBarStyle: {
-          display: 'flex',
-          position: 'absolute',
-          bottom: 25,
-          left: 80,
-          right: 80,
-          elevation: 4,
-          backgroundColor: 'white',
-          borderRadius: 30,
-          height: 60,
-          shadowOffset: {
-            width: 0,
-            height: 0.5
+    <View style={{ flex: 1, backgroundColor: 'white' }}>
+      <Tab.Navigator
+        initialRouteName="Dashboard"
+        screenOptions={({ route }) => ({
+          tabBarHideOnKeyboard: true,
+          tabBarStyle: {
+            position: 'relative',
+            justifyContent: 'center',
+            alignItems: 'center',
+            elevation: 4,
+            backgroundColor: 'white',
+            borderRadius: 16,
+            margin: 22,
+            height: 60,
+            shadowOffset: {
+              width: 0,
+              height: 0.5
+            },
+            opacity: 0.96,
+            shadowOpacity: 0.1,
+            shadowRadius: 4
           },
-          opacity: 0.96,
-          shadowOpacity: 0.1,
-          shadowRadius: 4
-        },
-        tabBarShowLabel: false,
-        headerShown: false
-      })}
-    >
-      <Tab.Screen
-        name="Dashboard"
-        component={Dashboard}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <View
-              style={{
-                top: Platform.OS === 'ios' ? 14 : 0
-              }}
-            >
-              <FontAwesome6
-                name="house-chimney"
-                size={20}
-                color={focused ? '#65B3FF' : '#7C7C8A'}
-              />
-            </View>
-          )
-        }}
-        listeners={{
-          tabPress: () => {
-            handleGetSalesHistory()
-          }
-        }}
-      />
-      <Tab.Screen
-        name="Sales"
-        component={Sales}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <View
-              style={{
-                top: Platform.OS === 'ios' ? 14 : 0
-              }}
-            >
-              <FontAwesome6
-                name="cart-shopping"
-                size={20}
-                color={focused ? '#65B3FF' : '#7C7C8A'}
-              />
-            </View>
-          )
-        }}
-      />
-      <Tab.Screen
-        name="Stock"
-        component={Stock}
-        listeners={{
-          tabPress: () => {
-            handleGetStock()
-          }
-        }}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <View
-              style={{
-                top: Platform.OS === 'ios' ? 14 : 0
-              }}
-            >
-              <FontAwesome6
-                name="box"
-                size={20}
-                color={focused ? '#65B3FF' : '#7C7C8A'}
-              />
-            </View>
-          )
-        }}
-      />
-    </Tab.Navigator>
+          tabBarShowLabel: false,
+          headerShown: false
+        })}
+      >
+        <Tab.Screen
+          name="Dashboard"
+          component={Dashboard}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <View
+                style={{
+                  top: Platform.OS === 'ios' ? 14 : 0
+                }}
+              >
+                <FontAwesome6
+                  name="house-chimney"
+                  size={22}
+                  color={focused ? '#65B3FF' : '#7C7C8A'}
+                />
+              </View>
+            )
+          }}
+          listeners={{
+            tabPress: () => {
+              handleGetSalesHistory()
+            }
+          }}
+        />
+        <Tab.Screen
+          name="Sales"
+          component={Sales}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <View
+                style={{
+                  top: Platform.OS === 'ios' ? 14 : 0
+                }}
+              >
+                <FontAwesome6
+                  name="cart-shopping"
+                  size={22}
+                  color={focused ? '#65B3FF' : '#7C7C8A'}
+                />
+              </View>
+            )
+          }}
+        />
+        <Tab.Screen
+          name="Stock"
+          component={Stock}
+          listeners={{
+            tabPress: () => {
+              handleGetStock()
+            }
+          }}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <View
+                style={{
+                  top: Platform.OS === 'ios' ? 14 : 0
+                }}
+              >
+                <FontAwesome6
+                  name="box"
+                  size={22}
+                  color={focused ? '#65B3FF' : '#7C7C8A'}
+                />
+              </View>
+            )
+          }}
+        />
+        <Tab.Screen
+          name="Graphs"
+          component={Stock}
+          listeners={{
+            tabPress: () => {
+              handleGetStock()
+            }
+          }}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <View
+                style={{
+                  top: Platform.OS === 'ios' ? 14 : 0
+                }}
+              >
+                <FontAwesome6
+                  name="chart-simple"
+                  size={22}
+                  color={focused ? '#65B3FF' : '#7C7C8A'}
+                />
+              </View>
+            )
+          }}
+        />
+      </Tab.Navigator>
+    </View>
   )
 }

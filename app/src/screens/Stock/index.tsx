@@ -3,8 +3,6 @@ import {
   Container,
   ContentContainer,
   HeaderContainer,
-  NotFoundContainer,
-  NotFoundText,
   SearchInputContainer,
   StockContentContainer,
   StockHeaderLabel
@@ -15,16 +13,9 @@ import { BasicButton } from '@/components'
 import { Icon } from 'native-base'
 import { CustomInput } from '@/components/shared/CustomFuckingInput'
 import { MaterialIcons } from '@expo/vector-icons'
-import MaskedView from '@react-native-masked-view/masked-view'
-import { LinearGradient } from 'expo-linear-gradient'
 import { useForm } from 'react-hook-form'
 import { AnimaterFlyPaperLoading } from '@/components/AnimatedView'
 import { NoResultsFoundComponent } from '@/components/NoResultsFound'
-import {
-  AndroidLinearGradientValue,
-  IOSLinearGradientValue
-} from '@/constants/linearGradient'
-import { Platform } from 'react-native'
 
 export function Stock({ navigation }: any) {
   const { handleGetStock, stockItems, handleSearchStock, notFoundProducts } =
@@ -78,28 +69,14 @@ export function Stock({ navigation }: any) {
 
         {notFoundProducts && <NoResultsFoundComponent />}
         {stockItems?.length && !notFoundProducts ? (
-          <MaskedView
-            style={{ flex: 1 }}
-            maskElement={
-              <LinearGradient
-                style={{ flex: 1 }}
-                colors={
-                  Platform.OS === 'android'
-                    ? AndroidLinearGradientValue
-                    : IOSLinearGradientValue
-                }
-              />
-            }
-          >
-            <StockContentContainer>
-              <StockCard
-                itens={stockItems}
-                navigateCallBack={() => {
-                  console.log('oi')
-                }}
-              />
-            </StockContentContainer>
-          </MaskedView>
+          <StockContentContainer>
+            <StockCard
+              itens={stockItems}
+              navigateCallBack={() => {
+                console.log('oi')
+              }}
+            />
+          </StockContentContainer>
         ) : (
           !stockItems?.length &&
           !notFoundProducts && <AnimaterFlyPaperLoading />

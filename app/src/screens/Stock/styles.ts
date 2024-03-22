@@ -8,7 +8,7 @@ export const Container = styled.SafeAreaView`
 `
 
 export const StockContentContainer = styled.ScrollView`
-  flex: ${Platform.OS === 'ios' ? 0.9 : 0.84};
+  flex: 1;
   padding: 0px 25px;
 `
 

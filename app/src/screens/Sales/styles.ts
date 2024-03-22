@@ -1,17 +1,23 @@
+import { Platform } from 'react-native'
 import styled from 'styled-components/native'
 
-export const Container = styled.ScrollView`
-  display: flex;
+export const Container = styled.SafeAreaView`
+  flex: 1;
   background-color: white;
+  padding-top: 60px;
+  padding-bottom: 60px;
+`
+
+export const ScrollView = styled.ScrollView`
+  flex: 1;
 `
 
 export const ContentContainer = styled.View`
   display: flex;
-  margin-top: 80px;
-  margin-bottom: 100px;
   padding: 0px 22px;
   gap: 30px;
 `
+
 
 export const ButtonContainer = styled.View`
   display: flex;

@@ -7,7 +7,8 @@ import {
   DiscountError,
   DiscountInfo,
   DiscountInfoContainer,
-  DiscountListContainer
+  DiscountListContainer,
+  ScrollView
 } from './styles'
 import { Card } from '@/components/SaleCard'
 import { Modal, View } from 'native-base'
@@ -158,99 +159,101 @@ export function Sales({ navigation }: any) {
 
   return (
     <Container>
-      <ContentContainer>
-        <Card
-          title={'Itens'}
-          itens={selectedItensToSell}
-          onPress={navigateToSelectItens}
-          deleteItemCallBack={(code?: string) => {
-            setSelectedItensToSell(
-              selectedItensToSell.filter((item) => item.code !== code)
-            )
-          }}
-        />
-        <ClientCard title={'Cliente'} itens={mockClients} />
-        <View
-          style={{
-            display: 'flex',
-            gap: 20
-          }}
-        >
-          <CardTitle>Pagamento Parcelado?</CardTitle>
-          <ToggleContainer>
-            <ToggleButton
-              ref={toggleRef}
-              optionOneOnPress={() => {
+      <ScrollView>
+        <ContentContainer>
+          <Card
+            title={'Itens'}
+            itens={selectedItensToSell}
+            onPress={navigateToSelectItens}
+            deleteItemCallBack={(code?: string) => {
+              setSelectedItensToSell(
+                selectedItensToSell.filter((item) => item.code !== code)
+              )
+            }}
+          />
+          <ClientCard title={'Cliente'} itens={mockClients} />
+          <View
+            style={{
+              display: 'flex',
+              gap: 20
+            }}
+          >
+            <CardTitle>Pagamento Parcelado?</CardTitle>
+            <ToggleContainer>
+              <ToggleButton
+                ref={toggleRef}
+                optionOneOnPress={() => {
+                  setInstallment(1)
+                }}
+                optionTwoOnPress={() => {
+                  setShowModal(true)
+                }}
+                optionOneText="Não"
+                optionTwoText="Sim"
+              />
+            </ToggleContainer>
+
+            <Modal
+              isOpen={showModal}
+              onClose={() => {
+                setShowModal(false)
                 setInstallment(1)
+                toggleRef?.current?.selectOption('optionOne')
               }}
-              optionTwoOnPress={() => {
-                setShowModal(true)
-              }}
-              optionOneText="Não"
-              optionTwoText="Sim"
-            />
-          </ToggleContainer>
+            >
+              <Modal.Content maxWidth="600px">
+                <Modal.CloseButton />
+                <Modal.Header>Selecione uma parcela</Modal.Header>
+                <Modal.Body>{renderDiscountList()}</Modal.Body>
+              </Modal.Content>
+            </Modal>
+            {renderSaleDetails()}
 
-          <Modal
-            isOpen={showModal}
-            onClose={() => {
-              setShowModal(false)
-              setInstallment(1)
-              toggleRef?.current?.selectOption('optionOne')
-            }}
-          >
-            <Modal.Content maxWidth="600px">
-              <Modal.CloseButton />
-              <Modal.Header>Selecione uma parcela</Modal.Header>
-              <Modal.Body>{renderDiscountList()}</Modal.Body>
-            </Modal.Content>
-          </Modal>
-          {renderSaleDetails()}
-
-          <Modal
-            isOpen={showErrorModal}
-            onClose={() => {
-              setShowErrorModal(false)
-            }}
-          >
-            <Modal.Content maxWidth="600px">
-              <Modal.CloseButton />
-              <Modal.Body>
-                <MaterialCommunityIcons />
-                <View
-                  style={{
-                    display: 'flex',
-                    width: '100%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: 20,
-                    gap: 20
-                  }}
-                >
-                  <MaterialCommunityIcons
-                    name="alert"
-                    size={60}
-                    color="#F3BE1D"
-                  />
-                  <Text style={{ textAlign: 'center' }}>
-                    Selecione ao menos um item para finalizar a venda
-                  </Text>
-                </View>
-              </Modal.Body>
-            </Modal.Content>
-          </Modal>
-          <ButtonContainer>
-            <BasicButton
-              onPress={async () => {
-                await handleFinishSale()
+            <Modal
+              isOpen={showErrorModal}
+              onClose={() => {
+                setShowErrorModal(false)
               }}
-              text="Finalizar venda"
-              size="md"
-              width="50%"
-            />
-          </ButtonContainer>
-        </View>
-      </ContentContainer>
+            >
+              <Modal.Content maxWidth="600px">
+                <Modal.CloseButton />
+                <Modal.Body>
+                  <MaterialCommunityIcons />
+                  <View
+                    style={{
+                      display: 'flex',
+                      width: '100%',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      padding: 20,
+                      gap: 20
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      name="alert"
+                      size={60}
+                      color="#F3BE1D"
+                    />
+                    <Text style={{ textAlign: 'center' }}>
+                      Selecione ao menos um item para finalizar a venda
+                    </Text>
+                  </View>
+                </Modal.Body>
+              </Modal.Content>
+            </Modal>
+            <ButtonContainer>
+              <BasicButton
+                onPress={async () => {
+                  await handleFinishSale()
+                }}
+                text="Finalizar venda"
+                size="md"
+                width="50%"
+              />
+            </ButtonContainer>
+          </View>
+        </ContentContainer>
+      </ScrollView>
     </Container>
   )
 }
