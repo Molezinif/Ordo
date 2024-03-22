@@ -4,17 +4,17 @@ import { Platform } from 'react-native'
 export const Container = styled.SafeAreaView`
   flex: 1;
   background-color: white;
-  padding-top: ${Platform.OS === 'android' ? 25 : 0}px;
+  padding-top: ${Platform.OS === 'android' ? 10 : 0}px;
 `
 
 export const StockContentContainer = styled.ScrollView`
-  flex: 1;
+  flex: ${Platform.OS === 'ios' ? 0.9 : 0.84};
+  padding: 0px 25px;
 `
 
 export const ContentContainer = styled.View`
   flex: 1;
-  margin-top: 20px;
-  padding: 0px 25px;
+  margin-top: ${Platform.OS === 'android' ? 40 : 20}px;
   gap: 30px;
 `
 
@@ -28,17 +28,12 @@ export const HeaderContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  padding: 0px 25px;
 `
 
-export const FloatButton = styled.TouchableOpacity`
-  position: absolute;
-  right: 20px;
-  bottom: 20px;
-  width: 60px;
-  height: 60px;
-  border-radius: 30px;
-  align-items: center;
-  justify-content: center;
+export const SearchInputContainer = styled.View`
+  display: flex;
+  padding: 0px 25px;
 `
 
 export const NotFoundContainer = styled.View`

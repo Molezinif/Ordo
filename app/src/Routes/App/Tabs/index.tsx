@@ -1,12 +1,11 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
 import { Dashboard } from '@/screens/Dashboard'
 import { Sales } from '@/screens/Sales'
 import { Stock } from '@/screens/Stock'
 import { useItens } from '@/context/itensContext'
-import { TouchableOpacity, View, StyleSheet, Platform } from 'react-native'
+import { View, Platform } from 'react-native'
 
 const Tab = createBottomTabNavigator()
 
@@ -24,7 +23,7 @@ export function Tabs() {
           bottom: 25,
           left: 80,
           right: 80,
-          elevation: 0.8,
+          elevation: 4,
           backgroundColor: 'white',
           borderRadius: 30,
           height: 60,
@@ -32,6 +31,7 @@ export function Tabs() {
             width: 0,
             height: 0.5
           },
+          opacity: 0.96,
           shadowOpacity: 0.1,
           shadowRadius: 4
         },

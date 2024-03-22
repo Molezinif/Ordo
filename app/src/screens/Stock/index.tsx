@@ -5,6 +5,7 @@ import {
   HeaderContainer,
   NotFoundContainer,
   NotFoundText,
+  SearchInputContainer,
   StockContentContainer,
   StockHeaderLabel
 } from './styles'
@@ -19,6 +20,11 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { useForm } from 'react-hook-form'
 import { AnimaterFlyPaperLoading } from '@/components/AnimatedView'
 import { NoResultsFoundComponent } from '@/components/NoResultsFound'
+import {
+  AndroidLinearGradientValue,
+  IOSLinearGradientValue
+} from '@/constants/linearGradient'
+import { Platform } from 'react-native'
 
 export function Stock({ navigation }: any) {
   const { handleGetStock, stockItems, handleSearchStock, notFoundProducts } =
@@ -46,28 +52,30 @@ export function Stock({ navigation }: any) {
             onPress={() => navigation.navigate('ItensRegister')}
           />
         </HeaderContainer>
+        <SearchInputContainer>
+          <CustomInput
+            {...register('stockSearchInput')}
+            value={searchInputValue ?? ''}
+            onChange={(e) => {
+              setSearchInputValue(e)
+              handleSearchStock(e)
+            }}
+            borderRadius={'16'}
+            icon={
+              <Icon
+                as={<MaterialIcons name="search" />}
+                size={'md'}
+                ml={'3'}
+                bg={'white'}
+              />
+            }
+            placeholder="Pesquisar"
+            error={''}
+            name="stockSearch"
+            type="default"
+          />
+        </SearchInputContainer>
 
-        <CustomInput
-          {...register('stockSearchInput')}
-          value={searchInputValue ?? ''}
-          onChange={(e) => {
-            setSearchInputValue(e)
-            handleSearchStock(e)
-          }}
-          borderRadius={'16'}
-          icon={
-            <Icon
-              as={<MaterialIcons name="search" />}
-              size={'md'}
-              ml={'3'}
-              bg={'white'}
-            />
-          }
-          placeholder="Pesquisar"
-          error={''}
-          name="stockSearch"
-          type="default"
-        />
         {notFoundProducts && <NoResultsFoundComponent />}
         {stockItems?.length && !notFoundProducts ? (
           <MaskedView
@@ -75,16 +83,11 @@ export function Stock({ navigation }: any) {
             maskElement={
               <LinearGradient
                 style={{ flex: 1 }}
-                colors={[
-                  'white',
-                  'white',
-                  'white',
-                  'white',
-                  'white',
-                  'white',
-                  'white',
-                  'transparent'
-                ]}
+                colors={
+                  Platform.OS === 'android'
+                    ? AndroidLinearGradientValue
+                    : IOSLinearGradientValue
+                }
               />
             }
           >
