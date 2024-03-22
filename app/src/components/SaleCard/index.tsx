@@ -95,7 +95,7 @@ export function Card({ title, itens, onPress, deleteItemCallBack }: any) {
           <TouchableOpacity onPress={onPress}>
             <MaterialCommunityIcons
               name="pluscircle"
-              color={'#65B3FF'}
+              color={'#3789db'}
               size={30}
             />
           </TouchableOpacity>

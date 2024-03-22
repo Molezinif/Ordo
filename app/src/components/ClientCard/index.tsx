@@ -42,7 +42,7 @@ export function ClientCard({ title, itens }: any) {
           <CardFooter>
             <Text style={{ color: '#7C7C8A' }}>Adicione um cliente</Text>
             <TouchableOpacity>
-              <AntDesign name="pluscircle" color={'#65B3FF'} size={30} />
+              <AntDesign name="pluscircle" color={'#3789db'} size={30} />
             </TouchableOpacity>
           </CardFooter>
         ) : (

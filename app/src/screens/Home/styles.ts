@@ -16,7 +16,7 @@ export const TextContainer = styled.View`
 
 export const MainText = styled.Text`
   font-size: 28px;
-  color: #65b3ff;
+  color: #3789db;
 `
 
 export const ButtonContainer = styled.View`
@@ -37,7 +37,7 @@ export const LinkText = styled.Text`
 
 export const LinkContent = styled.Text`
   font-size: 16px;
-  color: #65b3ff;
+  color: #3789db;
   text-decoration: underline;
-  text-decoration-color: #65b3ff;
+  text-decoration-color: #3789db;
 `

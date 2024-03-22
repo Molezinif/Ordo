@@ -8,7 +8,7 @@ export const Container = styled.View`
 `
 
 export const OptionOne = styled.TouchableOpacity<{ isSelected: boolean }>`
-  background-color: ${(props) => (props.isSelected ? '#65B3FF' : '#ffffff')};
+  background-color: ${(props) => (props.isSelected ? '#3789db' : '#ffffff')};
   padding: 8px 10px;
   justify-content: center;
   align-items: center;
@@ -21,7 +21,7 @@ export const OptionText = styled(Text)<{ isSelected: boolean }>`
 `
 
 export const OptionTwo = styled.TouchableOpacity<{ isSelected: boolean }>`
-  background-color: ${(props) => (props.isSelected ? '#65B3FF' : '#ffffff')};
+  background-color: ${(props) => (props.isSelected ? '#3789db' : '#ffffff')};
   padding: 8px 8px;
   justify-content: center;
   align-items: center;

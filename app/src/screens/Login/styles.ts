@@ -55,6 +55,6 @@ export const LinkText = styled.Text`
 
 export const LinkContent = styled.Text`
   font-size: 16px;
-  color: #65b3ff;
+  color: #3789db;
   text-decoration: underline;
 `

@@ -23,7 +23,7 @@ const BasicButton = ({
   return (
     <Button
       onPress={onPress}
-      style={{ backgroundColor: '#65B3FF' }}
+      style={{ backgroundColor: '#3789db' }}
       size={size}
       _text={{ fontSize: fontSize ?? 16, fontWeight: 'bold' }}
       width={width}

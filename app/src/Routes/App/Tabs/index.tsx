@@ -50,9 +50,9 @@ export function Tabs() {
                 }}
               >
                 <FontAwesome6
-                  name="house-chimney"
+                  name="house"
                   size={22}
-                  color={focused ? '#65B3FF' : '#7C7C8A'}
+                  color={focused ? '#3789db' : '#7C7C8A'}
                 />
               </View>
             )
@@ -76,7 +76,7 @@ export function Tabs() {
                 <FontAwesome6
                   name="cart-shopping"
                   size={22}
-                  color={focused ? '#65B3FF' : '#7C7C8A'}
+                  color={focused ? '#3789db' : '#7C7C8A'}
                 />
               </View>
             )
@@ -100,7 +100,7 @@ export function Tabs() {
                 <FontAwesome6
                   name="box"
                   size={22}
-                  color={focused ? '#65B3FF' : '#7C7C8A'}
+                  color={focused ? '#3789db' : '#7C7C8A'}
                 />
               </View>
             )
@@ -124,7 +124,7 @@ export function Tabs() {
                 <FontAwesome6
                   name="chart-simple"
                   size={22}
-                  color={focused ? '#65B3FF' : '#7C7C8A'}
+                  color={focused ? '#3789db' : '#7C7C8A'}
                 />
               </View>
             )

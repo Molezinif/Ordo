@@ -695,7 +695,7 @@
             <mxPoint x="907" y="139" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="dzVRJKQX0ocB5s2rTsuR-7" value="Sistema Ordo" style="swimlane;startSize=0;fontSize=50;fontColor=#65B3FF;labelBackgroundColor=default;" parent="1" vertex="1">
+        <mxCell id="dzVRJKQX0ocB5s2rTsuR-7" value="Sistema Ordo" style="swimlane;startSize=0;fontSize=50;fontColor=#3789db;labelBackgroundColor=default;" parent="1" vertex="1">
           <mxGeometry x="440" y="-660" width="900" height="1970" as="geometry" />
         </mxCell>
         <mxCell id="11GQjq1lOzW_4-q64_Jf-1" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=none;endArrow=open;endFill=0;dashed=1;rounded=0;entryX=0.572;entryY=0.004;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="ftHd1YerH3bjVElIejZp-151" target="ftHd1YerH3bjVElIejZp-159">
