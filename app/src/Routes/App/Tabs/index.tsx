@@ -6,6 +6,7 @@ import { Sales } from '@/screens/Sales'
 import { Stock } from '@/screens/Stock'
 import { useItens } from '@/context/itensContext'
 import { View, Platform } from 'react-native'
+import { Chart } from '@/screens/Charts'
 
 const Tab = createBottomTabNavigator()
 
@@ -108,7 +109,7 @@ export function Tabs() {
         />
         <Tab.Screen
           name="Graphs"
-          component={Stock}
+          component={Chart}
           listeners={{
             tabPress: () => {
               handleGetStock()

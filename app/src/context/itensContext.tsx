@@ -6,7 +6,7 @@ import React, {
   useCallback
 } from 'react'
 import {
-  SalesRepository,
+  getSalesHistory,
   getStock,
   queryStockSearch
 } from '@/services/repositories'
@@ -36,7 +36,12 @@ const ItemProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const handleGetStock = useCallback(async () => {
     await getStock().then((data) => {
+      if (data.length === 0) {
+        setNotFoundProducts(true)
+        return
+      }
       setStockItems(data)
+      setNotFoundProducts(false)
     })
   }, [])
 
@@ -52,8 +57,7 @@ const ItemProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }
 
   const handleGetSalesHistory = useCallback(async () => {
-    const salesRepo = new SalesRepository()
-    await salesRepo.getSalesHistory().then((data) => {
+    await getSalesHistory().then((data) => {
       setSalesHistory(data)
     })
   }, [])

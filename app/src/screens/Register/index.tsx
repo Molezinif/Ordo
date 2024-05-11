@@ -2,10 +2,15 @@ import React from 'react'
 import { ButtonWrapper, Form, Header, Title, TitleText } from './styles'
 import { BasicButton } from '@/components/BasicButton'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { auth } from '../../../firebase'
+import { auth, db } from '../../../firebase'
 import { CustomInput } from '@/components/shared/CustomFuckingInput'
 import { Controller, useForm } from 'react-hook-form'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import {
+  collection,
+  doc,
+  setDoc
+} from 'firebase/firestore'
 
 export function Register({ navigation }: any) {
   const {
@@ -17,7 +22,21 @@ export function Register({ navigation }: any) {
 
   const onSubmit = async (data) => {
     try {
-      await createUserWithEmailAndPassword(auth, data?.email, data?.password)
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        data?.email,
+        data?.password
+      )
+
+      const userCollection = collection(db, `users`)
+      const userDoc = doc(userCollection, user.uid)
+
+      await setDoc(userDoc, {
+        email: data.email,
+        user: data.user,
+        phone: data?.phone
+      })
+
       navigation.navigate('Login')
     } catch (error) {
       throw new Error(JSON.stringify(error))
@@ -68,7 +87,6 @@ export function Register({ navigation }: any) {
               placeholder="example@email.com"
               InputTitle={'Email:'}
               error={errors?.email?.message}
-              name="email"
               type="default"
             />
           )}
@@ -95,19 +113,18 @@ export function Register({ navigation }: any) {
           render={({ field }) => (
             <CustomInput
               {...field}
-              onChange={(text) => {
-                const formattedNumber = handleFormatPhoneNumber(text)
+              onChange={(event) => {
+                const formattedNumber = handleFormatPhoneNumber(event.target.value)
                 field.onChange(formattedNumber)
               }}
               value={field.value}
               placeholder="(99) 99999-9999"
               InputTitle={'Telefone:'}
-              error={errors?.Phone?.message}
-              name="Phone"
+              error={errors?.phone?.message}
               type="numeric"
             />
           )}
-          name="Phone"
+          name="phone"
           rules={{ required: 'Telefone é obrigatório' }}
         />
 
@@ -118,7 +135,6 @@ export function Register({ navigation }: any) {
               {...field}
               placeholder="Insira seu nome"
               InputTitle={'Usuário:'}
-              name="user"
               error={errors?.user?.message}
               type="default"
             />
@@ -135,7 +151,6 @@ export function Register({ navigation }: any) {
               placeholder="Insira a senha"
               InputTitle={'Senha:'}
               error={errors?.password?.message}
-              name="password"
               type="password"
             />
           )}
@@ -151,7 +166,6 @@ export function Register({ navigation }: any) {
               placeholder="Confirme sua senha"
               InputTitle={'Confirmar senha:'}
               error={errors?.confirmPassword?.message}
-              name="confirmPassword"
               type="password"
             />
           )}

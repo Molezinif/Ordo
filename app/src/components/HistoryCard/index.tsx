@@ -12,6 +12,7 @@ import {
 import React from 'react'
 import { View } from 'native-base'
 import { CardTitle } from '../ClientCard/styles'
+import { NoResultsFoundComponent } from '../NoResultsFound'
 
 export function Item({ item }: any) {
   return (
@@ -39,7 +40,30 @@ export function Item({ item }: any) {
   )
 }
 
-export function HistoryCard({ historyItens }: any) {
+interface HistoryCardProps {
+  historyItens: any[]
+  notFoundContent?: boolean
+}
+
+export function HistoryCard({
+  historyItens,
+  notFoundContent
+}: Readonly<HistoryCardProps>) {
+  if (notFoundContent) {
+    return (
+      <CardContainer>
+        <CardTitle>Vendas recentes</CardTitle>
+        <CardView hasContent={historyItens?.length}>
+          <ScrollContentContainer>
+            <View style={{ display: 'flex', gap: 10 }}>
+              <NoResultsFoundComponent size="sm" />
+            </View>
+          </ScrollContentContainer>
+        </CardView>
+      </CardContainer>
+    )
+  }
+
   return (
     <CardContainer>
       <CardTitle>Vendas recentes</CardTitle>

@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 /* eslint-disable array-callback-return */
-import { TouchableOpacity, View } from 'react-native'
+import { TouchableOpacity, View, Text } from 'react-native'
 import {
   CardView,
   CardContainer,
@@ -9,11 +9,18 @@ import {
   ItemInfos,
   LeftItemInfos,
   RightItemInfos,
-  CardTextInfo
+  CardTextInfo,
+  SearchInputContainer
 } from './styles'
+import { MaterialIcons } from '@expo/vector-icons'
 import React, { useCallback, useEffect } from 'react'
-import { Checkbox } from 'native-base'
+import { Checkbox, Icon, Modal } from 'native-base'
 import { useItens } from '@/context/itensContext'
+import { CustomInput } from '../shared/CustomFuckingInput'
+import { Controller, useForm } from 'react-hook-form'
+import { BasicButton } from '../BasicButton'
+import { NoResultsFoundComponent } from '../NoResultsFound'
+import { AnimaterFlyPaperLoading } from '../AnimatedView'
 
 export function Item({ item, isItensSelectable, checkBoxDisplay }: any) {
   return (
@@ -54,29 +61,68 @@ export function Item({ item, isItensSelectable, checkBoxDisplay }: any) {
   )
 }
 
-export function SelectItensFromStockCard({
-  itens,
-  isItensSelectable,
-  navigateCallBack
-}: any) {
+export function SelectItensFromStockCard({ navigateCallBack }: any) {
   const [checkBoxDisplay, setCheckBoxDisplay] = React.useState(false)
   const [stockItens, setStockItens] = React.useState([] as any)
-  const { setSelectedItensToSell, selectedItensToSell } = useItens()
+  const [showQuantityModal, setShowQuantityModal] = React.useState(false)
+  const [selectedItem, setSelectedItem] = React.useState({} as any)
+  const [isLoading, setIsLoading] = React.useState(false)
+  const {
+    setSelectedItensToSell,
+    selectedItensToSell,
+    handleSearchStock,
+    stockItems,
+    handleGetStock,
+    notFoundProducts
+  } = useItens()
+
+  const { control, getValues, setError, getFieldState, setValue, setFocus } =
+    useForm()
 
   useEffect(() => {
-    const itensFormatted = itens.filter((item) => {
-      const selectedItem = selectedItensToSell.find(
-        (i: any) => i.code === item.code
-      )
-      const selectedQuantity = selectedItem?.selectedQuantity || 0
+    const data = async () => {
+      await handleGetStock()
+    }
 
-      return (
-        item.quantity > selectedQuantity || item.quantity !== selectedQuantity
-      )
-    })
+    setIsLoading(true)
+    void data()
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000)
+  }, [])
 
-    setStockItens(itensFormatted)
-  }, [itens, selectedItensToSell])
+  useEffect(() => {
+    const itensFormattedQuantity = stockItems
+      .filter((item) => {
+        const selectedItem = selectedItensToSell.find(
+          (i: any) => i.code === item.code
+        )
+        const selectedQuantity = selectedItem?.selectedQuantity || 0
+
+        return (
+          item.quantity > selectedQuantity || item.quantity !== selectedQuantity
+        )
+      })
+      .map((item) => {
+        const selectedItem = selectedItensToSell.find(
+          (selected) => selected.code === item.code
+        )
+        const selectedQuantity = selectedItem?.selectedQuantity || 0
+
+        return {
+          ...item,
+          quantity: Math.max(0, item.quantity - Number(selectedQuantity))
+        }
+      })
+
+    setStockItens(itensFormattedQuantity)
+  }, [stockItems, selectedItensToSell])
+
+  useEffect(() => {
+    if (showQuantityModal) {
+      setFocus('selectedQuantity')
+    }
+  }, [showQuantityModal])
 
   const renderItens = useCallback(() => {
     return stockItens.map((item) => {
@@ -84,37 +130,12 @@ export function SelectItensFromStockCard({
         <TouchableOpacity
           key={item.code}
           style={{ width: '100%' }}
-          onLongPress={() => {
-            setCheckBoxDisplay(true)
+          onPress={() => {
+            setSelectedItem(item)
+            setShowQuantityModal(true)
           }}
-          onPress={
-            isItensSelectable
-              ? () => {
-                  setSelectedItensToSell((prevState) => {
-                    if (prevState.map((i: any) => i.code).includes(item.code)) {
-                      return prevState.map((obj) => {
-                        if (obj.code === item.code) {
-                          return {
-                            ...obj,
-                            selectedQuantity: +obj.selectedQuantity + 1
-                          }
-                        }
-                        return obj
-                      })
-                    }
-                    const itemToAdd = {
-                      ...item,
-                      selectedQuantity: 1
-                    }
-                    return [...prevState, itemToAdd]
-                  })
-                  navigateCallBack()
-                }
-              : undefined
-          }
         >
           <Item
-            isItensSelectable={isItensSelectable}
             checkBoxDisplay={checkBoxDisplay}
             item={{
               name: item.productName,
@@ -126,17 +147,158 @@ export function SelectItensFromStockCard({
         </TouchableOpacity>
       )
     })
-  }, [
-    checkBoxDisplay,
-    isItensSelectable,
-    navigateCallBack,
-    setSelectedItensToSell,
-    stockItens
-  ])
+  }, [checkBoxDisplay, navigateCallBack, setSelectedItensToSell, stockItens])
+
+  const handleInsertItem = () => {
+    const selectedQuantity = getValues('selectedQuantity')
+
+    const quantityIsInvalid = getFieldState('selectedQuantity')?.error?.message
+
+    if (quantityIsInvalid) {
+      return
+    }
+
+    if (selectedQuantity && selectedItem) {
+      setSelectedItensToSell((prevState) => {
+        if (prevState.map((i: any) => i.code).includes(selectedItem.code)) {
+          return prevState.map((obj) => {
+            if (obj.code === selectedItem.code) {
+              return {
+                ...obj,
+                selectedQuantity:
+                  +obj.selectedQuantity + Number(selectedQuantity)
+              }
+            }
+
+            return obj
+          })
+        }
+
+        const itemToAdd = {
+          ...selectedItem,
+          quantity: selectedItem.quantity - Number(selectedQuantity),
+          selectedQuantity: Number(selectedQuantity)
+        }
+
+        return [...prevState, itemToAdd]
+      })
+      setShowQuantityModal(false)
+      navigateCallBack()
+    }
+  }
 
   return (
     <CardContainer>
-      <CardView>{renderItens()}</CardView>
+      <SearchInputContainer>
+        <Controller
+          name="selectItemSearchInput"
+          control={control}
+          render={({ field }) => {
+            return (
+              <CustomInput
+                {...field}
+                onChange={(e) => {
+                  field.onChange(e)
+                  handleSearchStock(e)
+                }}
+                borderRadius={'8'}
+                icon={
+                  <Icon
+                    as={<MaterialIcons name="search" />}
+                    size={'md'}
+                    ml={'3'}
+                    bg={'white'}
+                  />
+                }
+                placeholder="Pesquisar"
+                error={''}
+                type="default"
+              />
+            )
+          }}
+        />
+      </SearchInputContainer>
+      <CardView>
+        {isLoading && <AnimaterFlyPaperLoading />}
+        {notFoundProducts && !isLoading && (
+          <View style={{ marginTop: 120 }}>
+            <NoResultsFoundComponent />
+          </View>
+        )}
+        {!notFoundProducts && !isLoading && renderItens()}
+      </CardView>
+      <Modal
+        isOpen={showQuantityModal}
+        onClose={() => {
+          setValue('selectedQuantity', '1')
+          setError('selectedQuantity', {})
+          setShowQuantityModal(false)
+        }}
+        useRNModal={true}
+      >
+        <Modal.Content maxWidth="800px">
+          <Modal.CloseButton />
+          <Modal.Body>
+            <View style={{ display: 'flex', gap: 15, marginTop: 5 }}>
+              <Text style={{ fontWeight: '600', fontSize: 14 }}>
+                Quantidade
+              </Text>
+              <View style={{ display: 'flex', gap: 15 }}>
+                <Controller
+                  control={control}
+                  defaultValue={'1'}
+                  render={({ field, fieldState: { error } }) => {
+                    return (
+                      <CustomInput
+                        {...field}
+                        value={field.value}
+                        onChange={(text) => {
+                          field.onChange(text)
+                          const noItemsSelected = !text || Number(text) <= 0
+                          const quantitySelectedIsGreaterThanAvailable =
+                            text && Number(text) > selectedItem.quantity
+
+                          if (noItemsSelected) {
+                            setError('selectedQuantity', {
+                              message: 'Selecione pelo menos um item'
+                            })
+                          }
+
+                          if (quantitySelectedIsGreaterThanAvailable) {
+                            setError('selectedQuantity', {
+                              message: 'Quantidade indisponível'
+                            })
+                          }
+
+                          if (
+                            !noItemsSelected &&
+                            !quantitySelectedIsGreaterThanAvailable
+                          ) {
+                            setError('selectedQuantity', {})
+                          }
+                        }}
+                        placeholder="Insira a quantidade do produto"
+                        keyboardType={'number-pad'}
+                        type="numeric"
+                        error={error?.message}
+                      />
+                    )
+                  }}
+                  name="selectedQuantity"
+                />
+                <BasicButton
+                  onPress={() => {
+                    handleInsertItem()
+                  }}
+                  text="Inserir"
+                  size="sm"
+                  width="100%"
+                />
+              </View>
+            </View>
+          </Modal.Body>
+        </Modal.Content>
+      </Modal>
     </CardContainer>
   )
 }

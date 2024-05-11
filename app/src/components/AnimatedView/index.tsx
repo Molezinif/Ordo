@@ -6,11 +6,11 @@ export const AnimaterFlyPaperLoading = () => {
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <LottieView
         source={require('@/assets/flyPaper.json')}
-        style={{ flex: 1, height: 300, width: 1000 }}
+        style={{ width: 1000, height: 300 }}
         autoPlay
         loop
       />
-      <Text style={{ flex: 1, fontSize: 16, color: '#333333' }}>
+      <Text style={{ fontSize: 16, color: '#333333', textAlign: 'center' }}>
         Estamos preparando tudo para você.
       </Text>
     </View>

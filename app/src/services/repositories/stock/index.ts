@@ -5,19 +5,26 @@ import {
   orderBy,
   DocumentData
 } from 'firebase/firestore'
-import { db } from '@/../firebase'
+import { getUserDoc } from '../users'
 
 export const getStock = async (): Promise<DocumentData[]> => {
-  const q = query(collection(db, 'stock'), orderBy('createdAt', 'desc'))
+  const userDoc = await getUserDoc()
+  const q = query(collection(userDoc, 'stock'), orderBy('createdAt', 'desc'))
   const querySnapshot = await getDocs(q).then((data) => data)
 
-  const result = querySnapshot.docs.map((doc) => doc.data())
+  const result = querySnapshot.docs.map((doc) => {
+    return {
+      ...doc.data(),
+      id: doc.id
+    }
+  })
 
   return result
 }
 
 export const queryStockSearch = async (sq: string): Promise<DocumentData[]> => {
-  const q = query(collection(db, 'stock'), orderBy('createdAt', 'desc'))
+  const userDoc = await getUserDoc()
+  const q = query(collection(userDoc, 'stock'), orderBy('createdAt', 'desc'))
   const querySnapshot = await getDocs(q).then((data) => data)
 
   const result = querySnapshot.docs.map((doc) => doc.data())

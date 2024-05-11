@@ -19,8 +19,11 @@ import React, { useCallback, useEffect } from 'react'
 import { useItens } from '@/context/itensContext'
 import { SaleDetailsCard } from '@/components/SaleDetailsCard'
 import { TouchableOpacity, Text } from 'react-native'
-import { SalesRepository } from '@/services/repositories/sales'
+import { postCurrentSale } from '@/services/repositories/sales'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import { useAuth } from '@/context/auth'
+import { useNavigation } from '@react-navigation/native'
+import { CommonActions } from '@react-navigation/native'
 
 const mockClients = [
   {
@@ -30,10 +33,18 @@ const mockClients = [
   }
 ]
 
-export function Sales({ navigation }: any) {
+export function Sales() {
+  const navigation = useNavigation()
+
   const navigateToSelectItens = () => {
-    navigation.navigate('SelectItensToSale')
+    navigation.dispatch(
+      CommonActions.navigate({
+        name: 'SelectItensToSale'
+      })
+    )
   }
+
+  const { user } = useAuth()
 
   const [showModal, setShowModal] = React.useState(false)
 
@@ -71,7 +82,7 @@ export function Sales({ navigation }: any) {
       const value = +calculateTotal(selectedItensToSell) / i
       if (value !== 0) {
         result.push({
-          installment: i + 1,
+          installment: i,
           value
         })
       }
@@ -127,14 +138,13 @@ export function Sales({ navigation }: any) {
     )
   }, [installment, selectedItensToSell])
 
-  const salesRepo = new SalesRepository()
-
   const handleFinishSale = async () => {
     if (selectedItensToSell.length === 0) {
       setShowErrorModal(true)
       return
     }
     const sale = {
+      userUID: user?.uid,
       client: mockClients[0],
       itens: selectedItensToSell,
       installment,
@@ -142,12 +152,20 @@ export function Sales({ navigation }: any) {
       total: calculateTotal(selectedItensToSell)
     }
 
-    await salesRepo.postCurrentSale(sale)
+    await postCurrentSale(sale)
 
     await handleGetSalesHistory()
 
     setSelectedItensToSell([])
-    navigation.navigate('Dashboard')
+    navigation.dispatch(
+      CommonActions.navigate({
+        name: 'Success',
+        params: {
+          message: 'Venda finalizada com sucesso!',
+          screenToNavigate: 'Dashboard'
+        }
+      })
+    )
   }
 
   useEffect(() => {
@@ -200,6 +218,7 @@ export function Sales({ navigation }: any) {
                 setInstallment(1)
                 toggleRef?.current?.selectOption('optionOne')
               }}
+              useRNModal={true}
             >
               <Modal.Content maxWidth="600px">
                 <Modal.CloseButton />
@@ -214,6 +233,7 @@ export function Sales({ navigation }: any) {
               onClose={() => {
                 setShowErrorModal(false)
               }}
+              useRNModal={true}
             >
               <Modal.Content maxWidth="600px">
                 <Modal.CloseButton />

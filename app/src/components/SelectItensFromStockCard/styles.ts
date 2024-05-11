@@ -3,7 +3,7 @@ import styled from 'styled-components/native'
 export const CardContainer = styled.View`
   flex: 1;
   background-color: white;
-  gap: 4px;
+  gap: 8px;
 `
 
 export const ItemContainer = styled.View`
@@ -15,6 +15,19 @@ export const ItemContainer = styled.View`
   background-color: white;
   border-radius: 8px;
   margin: 10px 0px;
+`
+
+export const SearchInputContainer = styled.View`
+  display: flex;
+  width: 100%;
+`
+
+export const ButtonContainer = styled.View`
+  position: absolute;
+  bottom: 100px;
+  margin-top: 200px;
+  align-items: center;
+  gap: 5px;
 `
 
 export const CardTextInfo = styled.Text<{ color?: string; textSize?: string }>`

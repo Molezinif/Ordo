@@ -1,29 +1,37 @@
-import { collection, addDoc, query, orderBy, getDocs } from 'firebase/firestore'
-import { db } from '@/../firebase'
+import {
+  collection,
+  addDoc,
+  query,
+  orderBy,
+  getDocs,
+  limit
+} from 'firebase/firestore'
 import { randomUUID } from '@/utils/getRandomUUID'
+import { getUserDoc } from '../users'
 
-export class SalesRepository {
-  async postCurrentSale(data): Promise<any> {
-    const SalesCollection = collection(db, 'sales')
+export const postCurrentSale = async (data): Promise<any> => {
+  const userDoc = await getUserDoc()
+  const salesCollection = collection(userDoc, 'sales')
 
-    const formattedData = {
-      saleHistoryUUID: randomUUID(),
-      ...data,
-      total: Number(data?.total),
-      createdAt: new Date().toISOString()
-    }
-
-    await addDoc(SalesCollection, formattedData)
-
-    return true
+  const formattedData = {
+    saleHistoryUUID: randomUUID(),
+    ...data,
+    total: Number(data?.total),
+    createdAt: new Date().toISOString()
   }
 
-  async getSalesHistory(): Promise<any> {
-    const q = query(collection(db, 'sales'), orderBy('createdAt', 'desc'))
-    const querySnapshot = await getDocs(q).then((data) => data)
+  await addDoc(salesCollection, formattedData)
 
-    const result = querySnapshot.docs.map((doc) => doc.data())
+  return true
+}
 
-    return result
-  }
+export const getSalesHistory = async (): Promise<any> => {
+  const userDoc = await getUserDoc()
+  const salesCollection = collection(userDoc, 'sales')
+  const q = query(salesCollection, orderBy('createdAt', 'desc'), limit(6))
+  const querySnapshot = await getDocs(q).then((data) => data)
+
+  const result = querySnapshot.docs.map((doc) => doc.data())
+
+  return result
 }

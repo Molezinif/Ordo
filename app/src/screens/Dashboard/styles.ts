@@ -18,6 +18,11 @@ export const MainContentContainer = styled.View`
   margin-top: 40px;
 `
 
+export const DashboardHeaderLabel = styled.Text`
+  font-size: 24px;
+  font-weight: 400;
+`
+
 export const ToggleContainer = styled.View`
   width: 50%;
   align-self: flex-start;

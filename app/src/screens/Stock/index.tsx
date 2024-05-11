@@ -7,7 +7,7 @@ import {
   StockContentContainer,
   StockHeaderLabel
 } from './styles'
-import { StockCard } from '@/components/StockCard'
+import { StockCards } from '@/components/StockCard'
 import React, { useEffect, useState } from 'react'
 import { BasicButton } from '@/components'
 import { Icon } from 'native-base'
@@ -21,12 +21,17 @@ export function Stock({ navigation }: any) {
   const { handleGetStock, stockItems, handleSearchStock, notFoundProducts } =
     useItens()
   const [searchInputValue, setSearchInputValue] = useState<string>('')
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const data = async () => {
       await handleGetStock()
     }
+    setIsLoading(true)
     void data()
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000)
   }, [handleGetStock])
 
   const { register } = useForm()
@@ -51,7 +56,7 @@ export function Stock({ navigation }: any) {
               setSearchInputValue(e)
               handleSearchStock(e)
             }}
-            borderRadius={'16'}
+            borderRadius={'8'}
             icon={
               <Icon
                 as={<MaterialIcons name="search" />}
@@ -62,24 +67,24 @@ export function Stock({ navigation }: any) {
             }
             placeholder="Pesquisar"
             error={''}
-            name="stockSearch"
             type="default"
           />
         </SearchInputContainer>
 
-        {notFoundProducts && <NoResultsFoundComponent />}
-        {stockItems?.length && !notFoundProducts ? (
+        {notFoundProducts && !isLoading && <NoResultsFoundComponent />}
+        {stockItems?.length && !notFoundProducts && !isLoading ? (
           <StockContentContainer>
-            <StockCard
+            <StockCards
               itens={stockItems}
-              navigateCallBack={() => {
-                console.log('oi')
+              onPressItemCallback={(item) => {
+                navigation.navigate('ItensRegister', {
+                  itemToEdit: item
+                })
               }}
             />
           </StockContentContainer>
         ) : (
-          !stockItems?.length &&
-          !notFoundProducts && <AnimaterFlyPaperLoading />
+          isLoading && <AnimaterFlyPaperLoading />
         )}
       </ContentContainer>
     </Container>

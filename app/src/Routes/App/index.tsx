@@ -4,6 +4,7 @@ import React from 'react'
 import { Settings } from '@/screens/Settings'
 import { ItensRegister } from '@/screens/ItensRegister'
 import { SelectItensToSale } from '@/screens/Sales/SelectItens'
+import { Success } from '@/screens/Success'
 
 export function AppRoutes() {
   const AppStack = createNativeStackNavigator()
@@ -13,6 +14,10 @@ export function AppRoutes() {
       <AppStack.Screen name="Settings" component={Settings} />
       <AppStack.Screen name="ItensRegister" component={ItensRegister} />
       <AppStack.Screen name="SelectItensToSale" component={SelectItensToSale} />
+      <AppStack.Screen
+        name="Success"
+        component={Success as React.ComponentType}
+      />
     </AppStack.Navigator>
   )
 }

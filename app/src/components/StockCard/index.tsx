@@ -1,4 +1,4 @@
-import { View } from 'react-native'
+import { TouchableOpacity, View } from 'react-native'
 import {
   CardView,
   CardContainer,
@@ -36,20 +36,23 @@ export function Item({ item }: any) {
   )
 }
 
-export function StockCard({ itens }: any) {
+export function StockCards({ itens, onPressItemCallback }: any) {
   return (
     <CardContainer>
       <CardView>
         {itens.map((item, index) => (
-          <Item
-            key={index}
-            item={{
-              name: item.productName,
-              amount: item.quantity,
-              price: item.sellingPrice,
-              code: item.code
-            }}
-          />
+          <TouchableOpacity key={index} onPress={() => {
+            onPressItemCallback(item)
+          }}>
+            <Item
+              item={{
+                name: item.productName,
+                amount: item.quantity,
+                price: item.sellingPrice,
+                code: item.code
+              }}
+            />
+          </TouchableOpacity>
         ))}
       </CardView>
     </CardContainer>

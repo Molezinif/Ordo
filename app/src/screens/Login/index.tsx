@@ -67,7 +67,7 @@ export function Login() {
               />
             )}
             name="emailOrUser"
-            rules={{ required: 'Preencha seu usuário ou senha' }}
+            rules={{ required: 'Preencha seu email' }}
           />
           <Controller
             control={control}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useForm, Controller } from 'react-hook-form'
@@ -6,21 +6,61 @@ import { ButtonWrapper, Form, Header, Title, TitleText } from './styles'
 import { BasicButton } from '@/components/BasicButton'
 import { useItens } from '@/context/itensContext'
 import { CustomInput } from '@/components/shared/CustomFuckingInput'
-import { registerProduct } from '@/services/repositories/itens'
+import { editProduct, registerProduct } from '@/services/repositories/itens'
+import Toast from 'react-native-toast-message'
 
-export function ItensRegister({ navigation }: any) {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors }
-  } = useForm()
+interface ItemRegisterToast {
+  message: string
+}
+
+export function ItensRegister({ navigation, route }: any) {
+  const { control, handleSubmit, setValue } = useForm()
   const { handleGetStock } = useItens()
+
+  let itemToEdit
+  if (route?.params?.itemToEdit) {
+    itemToEdit = route.params.itemToEdit
+  }
+
+  useEffect(() => {
+    if (itemToEdit) {
+      setValue('item', {
+        ...itemToEdit,
+        costPrice: itemToEdit?.costPrice.toString(),
+        sellingPrice: itemToEdit.sellingPrice.toString()
+      })
+    }
+  }, [])
+
+  const showToast = ({ message }: ItemRegisterToast) => {
+    Toast.show({
+      type: 'success',
+      text1: 'Sucesso',
+      text2: message,
+      visibilityTime: 5000
+    })
+  }
 
   const onSubmit = async (data) => {
     try {
-      await registerProduct(data)
+      if (!itemToEdit) {
+        await registerProduct(data)
+        await handleGetStock()
+        navigation.goBack()
+
+        showToast({
+          message: `Produto criado com sucesso!`
+        })
+        return data
+      }
+
+      await editProduct(data)
       await handleGetStock()
       navigation.goBack()
+      showToast({
+        message: `Produto alterado com sucesso!`
+      })
+      return data
     } catch (error) {
       throw new Error(JSON.stringify(error))
     }
@@ -47,37 +87,40 @@ export function ItensRegister({ navigation }: any) {
       <Header>
         <TouchableOpacity onPress={() => navigation.goBack()} />
         <Title>
-          <TitleText>Cadastro de produto</TitleText>
+          <TitleText>{`${
+            itemToEdit ? 'Editar produto' : 'Novo Produto'
+          }`}</TitleText>
         </Title>
       </Header>
       <Form>
         <Controller
           control={control}
-          render={({ field }) => (
-            <CustomInput
-              {...field}
-              placeholder="Insira um código aqui"
-              InputTitle="Código:"
-              type="default"
-              error={errors.code?.message}
-            />
-          )}
-          name="code"
-          rules={{ required: 'Código é obrigatório' }}
-        />
-        <Controller
-          control={control}
-          render={({ field }) => (
+          render={({ field, fieldState: { error } }) => (
             <CustomInput
               {...field}
               placeholder="Insira o nome do produto"
               InputTitle="Nome do produto:"
               type="default"
-              error={errors.productName?.message}
+              error={error?.message}
             />
           )}
-          name="productName"
+          name="item.productName"
           rules={{ required: 'Nome do produto é obrigatório' }}
+        />
+        <Controller
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <CustomInput
+              {...field}
+              defaultValue={itemToEdit?.quantity.toString() ?? '1'}
+              value={field.value ?? '1'}
+              placeholder="Insira a quantidade do produto"
+              InputTitle="Quantidade:"
+              type="numeric"
+              error={error?.message}
+            />
+          )}
+          name="item.quantity"
         />
         <View
           style={{
@@ -94,16 +137,17 @@ export function ItensRegister({ navigation }: any) {
           >
             <Controller
               control={control}
-              render={({ field }) => (
+              render={({ field, fieldState: { error } }) => (
                 <CustomInput
                   {...field}
                   placeholder="R$"
                   InputTitle="Preço de custo:"
-                  type="numeric"
-                  error={errors.costPrice?.message}
+                  type="default"
+                  keyboardType={'numeric'}
+                  error={error?.message}
                 />
               )}
-              name="costPrice"
+              name="item.costPrice"
               rules={{ required: 'Preço de custo obrigatório' }}
             />
           </View>
@@ -114,69 +158,75 @@ export function ItensRegister({ navigation }: any) {
           >
             <Controller
               control={control}
-              render={({ field }) => (
+              render={({ field, fieldState: { error } }) => (
                 <CustomInput
                   {...field}
                   placeholder="R$"
                   InputTitle="Preço de venda:"
-                  type="numeric"
-                  error={errors.sellingPrice?.message}
+                  type="default"
+                  keyboardType={'numeric'}
+                  error={error?.message}
                 />
               )}
-              name="sellingPrice"
+              name="item.sellingPrice"
               rules={{ required: 'Preço de venda obrigatório' }}
             />
           </View>
         </View>
         <Controller
           control={control}
-          render={({ field }) => (
+          render={({ field, fieldState: { error } }) => (
             <CustomInput
               {...field}
               onChange={(text) => {
-                const formattedDate = handleDateChange(text)
-                field.onChange(formattedDate)
+                console.log(text.length < 8)
+                if (text.length < 8) {
+                  const formattedDate = handleDateChange(text)
+                  field.onChange(formattedDate)
+                }
               }}
               value={field.value}
               placeholder="mm/aaaa"
               InputTitle="Validade:"
               type="numeric"
-              error={errors.expiryDate?.message}
+              keyboardType={'numeric'}
+              error={error?.message}
             />
           )}
-          name="expiryDate"
+          name="item.expiryDate"
           rules={{ required: 'Validade é obrigatória' }}
         />
         <Controller
           control={control}
-          render={({ field }) => (
+          render={({ field, fieldState: { error } }) => (
             <CustomInput
               {...field}
               placeholder="Insira a marca do produto"
               InputTitle="Marca:"
               type="default"
-              error={errors.brand?.message}
+              error={error?.message}
             />
           )}
-          name="brand"
+          name="item.brand"
         />
         <Controller
           control={control}
-          render={({ field }) => (
+          render={({ field, fieldState: { error } }) => (
             <CustomInput
               {...field}
-              defaultValue="1"
-              placeholder=""
-              InputTitle="Quantidade:"
-              type="numeric"
+              placeholder="Insira um código aqui"
+              InputTitle="Código:"
+              type="default"
+              error={error?.message}
             />
           )}
-          name="quantity"
+          name="item.code"
+          rules={{ required: 'Código é obrigatório' }}
         />
         <ButtonWrapper>
           <BasicButton
             onPress={handleSubmit(onSubmit)}
-            text="Cadastrar"
+            text={itemToEdit ? 'Editar' : 'Cadastrar'}
             width="50%"
             size="md"
           />

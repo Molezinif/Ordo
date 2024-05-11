@@ -5,14 +5,6 @@ import { Container, ContentContainer, StockContentContainer } from './styles'
 import { SelectItensFromStockCard } from '@/components/SelectItensFromStockCard'
 
 export function SelectItensToSale({ navigation }: any) {
-  const { handleGetStock, stockItems } = useItens()
-
-  useEffect(() => {
-    const data = async () => {
-      await handleGetStock()
-    }
-    void data()
-  }, [handleGetStock])
 
   return (
     <Container>
@@ -21,25 +13,11 @@ export function SelectItensToSale({ navigation }: any) {
           Selecione um item
         </Text>
         <StockContentContainer>
-          {stockItems?.length ? (
-            <SelectItensFromStockCard
-              itens={stockItems}
-              isItensSelectable
-              navigateCallBack={() => {
-                navigation.navigate('Main')
-              }}
-            />
-          ) : (
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
-              <ActivityIndicator size="large" color="#00b7ff" />
-            </View>
-          )}
+          <SelectItensFromStockCard
+            navigateCallBack={() => {
+              navigation.navigate('Main')
+            }}
+          />
         </StockContentContainer>
       </ContentContainer>
     </Container>

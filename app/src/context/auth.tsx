@@ -14,6 +14,7 @@ import {
 interface User {
   name: string | null
   email: string | null
+  uid: string | null
 }
 
 interface AuthContextData {
@@ -60,7 +61,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (user)
         setUser({
           email: user.email,
-          name: user?.displayName
+          name: user?.displayName,
+          uid: user?.uid
         })
       await AsyncStorage.multiSet([['@RNAuth:user', JSON.stringify(user)]])
       setLoading(false)
