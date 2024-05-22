@@ -14,9 +14,10 @@ export const ScrollContentView = styled.ScrollView`
   padding: 0px 25px;
 `
 
-export const ChartContentView = styled.ScrollView`
+export const ChartContentView = styled.View`
   display: flex;
-  gap: 60px;
+  gap: 40px;
+  margin-top: 10px;
 `
 
 export const ContentContainer = styled.View`
@@ -30,18 +31,22 @@ export const ChartHeaderLabel = styled.Text`
   font-weight: 400;
 `
 
+export const FinanceLabel = styled.Text`
+  font-size: 20px;
+  font-weight: 350;
+`
+
 export const ChartTitle = styled.Text`
-  font-size: 18px;
-  font-weight: 300;
+  font-size: 24px;
+  font-weight: 400;
   color: #333333;
 `
 
 export const HeaderContainer = styled.View`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  width: '100%';
   align-items: center;
-  padding: 0px 25px;
 `
 
 export const SearchInputContainer = styled.View`

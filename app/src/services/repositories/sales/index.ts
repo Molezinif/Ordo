@@ -8,17 +8,37 @@ import {
 } from 'firebase/firestore'
 import { randomUUID } from '@/utils/getRandomUUID'
 import { getUserDoc } from '../users'
+import { ETransactionOrigin, makeTransaction } from '../transactions'
+import { writeOffProducts } from '../itens/writeOff'
 
 export const postCurrentSale = async (data): Promise<any> => {
   const userDoc = await getUserDoc()
   const salesCollection = collection(userDoc, 'sales')
 
+  const transactionDate = new Date()
+
+  const saleHistoryUUID = randomUUID()
   const formattedData = {
-    saleHistoryUUID: randomUUID(),
+    saleHistoryUUID,
     ...data,
     total: Number(data?.total),
-    createdAt: new Date().toISOString()
+    createdAt: transactionDate
   }
+
+  const remoteWriteOffProducts = await writeOffProducts({
+    itens: data?.itens
+  })
+
+  if (!remoteWriteOffProducts) {
+    return false
+  }
+
+  await makeTransaction({
+    externalId: saleHistoryUUID,
+    origin: ETransactionOrigin.InventoryWriteOff,
+    value: data?.total ? Number(data?.total) : 0,
+    transactionDate
+  })
 
   await addDoc(salesCollection, formattedData)
 

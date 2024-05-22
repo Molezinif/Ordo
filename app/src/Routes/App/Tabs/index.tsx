@@ -7,8 +7,16 @@ import { Stock } from '@/screens/Stock'
 import { useItens } from '@/context/itensContext'
 import { View, Platform } from 'react-native'
 import { Chart } from '@/screens/Charts'
+import { Expenditures } from '@/screens/Expenditure/NestedScreens/expenditures'
 
 const Tab = createBottomTabNavigator()
+
+const routes = {
+  DASHBOARD: 'Dashboard',
+  SALES: 'Sales',
+  STOCK: 'Stock',
+  CHARTS: 'Charts'
+}
 
 export function Tabs() {
   const { handleGetStock, handleGetSalesHistory } = useItens()
@@ -25,8 +33,10 @@ export function Tabs() {
             alignItems: 'center',
             elevation: 4,
             backgroundColor: 'white',
-            borderRadius: 16,
-            margin: 22,
+            borderRadius: 40,
+            marginTop: 10,
+            marginBottom: 22,
+            marginHorizontal: 22,
             height: 60,
             shadowOffset: {
               width: 0,
@@ -65,8 +75,8 @@ export function Tabs() {
           }}
         />
         <Tab.Screen
-          name="Sales"
-          component={Sales}
+          name="Expenditure"
+          component={Expenditures}
           options={{
             tabBarIcon: ({ focused }) => (
               <View
@@ -75,13 +85,32 @@ export function Tabs() {
                 }}
               >
                 <FontAwesome6
-                  name="cart-shopping"
+                  name="file-circle-plus"
                   size={22}
                   color={focused ? '#3789db' : '#7C7C8A'}
                 />
               </View>
             )
           }}
+        />
+        <Tab.Screen
+          name="Sales"
+          component={Sales}
+          options={() => ({
+            tabBarIcon: ({ focused }) => (
+              <View
+                style={{
+                  top: Platform.OS === 'ios' ? 14 : 0
+                }}
+              >
+                <FontAwesome6
+                  name="dollar-sign"
+                  size={28}
+                  color={focused ? '#3789db' : '#7C7C8A'}
+                />
+              </View>
+            )
+          })}
         />
         <Tab.Screen
           name="Stock"

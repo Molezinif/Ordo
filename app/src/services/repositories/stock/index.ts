@@ -3,13 +3,16 @@ import {
   collection,
   getDocs,
   orderBy,
-  DocumentData
+  DocumentData,
 } from 'firebase/firestore'
 import { getUserDoc } from '../users'
 
 export const getStock = async (): Promise<DocumentData[]> => {
   const userDoc = await getUserDoc()
-  const q = query(collection(userDoc, 'stock'), orderBy('createdAt', 'desc'))
+  const q = query(
+    collection(userDoc, 'stock'),
+    orderBy('createdAt')
+  )
   const querySnapshot = await getDocs(q).then((data) => data)
 
   const result = querySnapshot.docs.map((doc) => {
@@ -24,7 +27,10 @@ export const getStock = async (): Promise<DocumentData[]> => {
 
 export const queryStockSearch = async (sq: string): Promise<DocumentData[]> => {
   const userDoc = await getUserDoc()
-  const q = query(collection(userDoc, 'stock'), orderBy('createdAt', 'desc'))
+  const q = query(
+    collection(userDoc, 'stock'),
+    orderBy('createdAt', 'desc')
+  )
   const querySnapshot = await getDocs(q).then((data) => data)
 
   const result = querySnapshot.docs.map((doc) => doc.data())

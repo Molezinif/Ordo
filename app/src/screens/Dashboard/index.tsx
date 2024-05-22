@@ -7,42 +7,107 @@ import {
   TopBarContainer
 } from './styles'
 import { mockAvatarImage } from '@/constants/dashboard'
-import React, { useEffect, useState } from 'react'
-import { TouchableOpacity } from 'react-native'
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
+import React, { useEffect, useRef, useState } from 'react'
+import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import { HistoryCard } from '@/components/HistoryCard'
 import { useItens } from '@/context/itensContext'
+import { useAuth } from '@/context/auth'
+import { ExpenditureSectionItem } from '../Expenditure/Components/ExpenditureSectionItem'
+import { getAverageMonthlyExpenditures } from '@/services/repositories/expenditure'
+import { getAllTransactions } from '@/services/repositories/transactions'
 
 export function Dashboard({ navigation }: any) {
   const { salesHistory, handleGetSalesHistory } = useItens()
+  const [showExitIcon, setShowExitIcon] = useState(false)
+  const [averageMonthlyExpenditures, setAverageMonthlyExpenditures] =
+    React.useState({
+      averageInventoryCost: 0,
+      averageVariableCost: 0,
+      averageOtherCost: 0,
+      averageTotalCost: 0
+    })
 
-  const handleAvatarPress = () => {
-    navigation.navigate('Settings')
-  }
+  const [transactions, setTransactions] = useState([])
+
+  const ref = useRef(null)
 
   useEffect(() => {
     handleGetSalesHistory()
   }, [handleGetSalesHistory])
 
+  const { signOut } = useAuth()
+  const handleSignOut = () => {
+    signOut()
+  }
+
+  useEffect(() => {
+    getAverageMonthlyExpenditures()
+      .then((data) => {
+        setAverageMonthlyExpenditures(data)
+      })
+      .catch((err) => {
+        console.error('Error fetching data:', err)
+      })
+  }, [])
+
+  useEffect(() => {
+    getAllTransactions()
+      .then((data: any) => {
+        setTransactions(data)
+      })
+      .catch((err) => {
+        console.error('Error fetching data:', err)
+      })
+  }, [])
+
   return (
-    <Container>
+    <Container
+      onStartShouldSetResponder={(e) => {
+        setShowExitIcon(false)
+        return false
+      }}
+    >
       <TopBarContainer>
         <DashboardHeaderLabel>Dashboard</DashboardHeaderLabel>
-        <TouchableOpacity onPress={handleAvatarPress} activeOpacity={1}>
-          <Avatar
-            bg="green.500"
-            source={{
-              uri: mockAvatarImage
-            }}
+        {showExitIcon ? (
+          <TouchableOpacity onPress={() => handleSignOut()} activeOpacity={1}>
+            <Avatar bg="#ff4955">
+              <FontAwesome6
+                name="arrow-right-from-bracket"
+                size={22}
+                color={'white'}
+              />
+            </Avatar>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => setShowExitIcon(true)}
+            activeOpacity={1}
           >
-            AJ
-          </Avatar>
-        </TouchableOpacity>
+            <Avatar
+              bg="green.500"
+              source={{
+                uri: mockAvatarImage
+              }}
+            />
+          </TouchableOpacity>
+        )}
       </TopBarContainer>
       <Heading marginTop={22} fontSize={30}>
         {'Olá,\nUsuário!👋'}
       </Heading>
       <MainContentContainer>
-        <HistoryCard historyItens={salesHistory} />
+        <ExpenditureSectionItem
+          title={'Entrada de estoque'}
+          onClickAction={() => navigation.navigate('InventoryCostExpenditure')}
+          subtitle={'Produtos >'}
+          value={Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+          }).format(averageMonthlyExpenditures.averageInventoryCost)}
+        />
+        <HistoryCard historyItens={transactions} />
       </MainContentContainer>
     </Container>
   )

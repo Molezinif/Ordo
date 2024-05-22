@@ -14,58 +14,13 @@ export const ItemContainer = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  gap: 5px;
-  background-color: white;
-  border-radius: 8px;
-
-  ${() => {
-    if (Platform.OS === 'android') {
-      return ``
-    } else if (Platform.OS === 'ios') {
-      return `
-        shadow-color: rgba(0, 0, 0, 0.06);
-        shadow-offset: 0px 2px;
-        shadow-opacity: 0.5;
-        shadow-radius: 4px;
-      `
-    } else {
-      return ''
-    }
-  }}
-`
-
-export const CardView = styled.View<{ hasContent: boolean }>`
-  display: flex;
-  width: 100%;
-  padding: 15px;
-  gap: ${({ hasContent }) => (hasContent ? '10px' : '0px')};
-  background-color: #fff;
-  border-radius: 8px;
-
-  ${() => {
-    if (Platform.OS === 'android') {
-      return `
-        elevation: 0.8;
-        shadowColor: '#52006A';
-      `
-    } else if (Platform.OS === 'ios') {
-      return `
-        shadow-color: rgba(0, 0, 0, 0.1);
-        shadow-offset: 0px 4px;
-        shadow-opacity: 1;
-        shadow-radius: 6px;
-        shadow-color: rgba(0, 0, 0, 0.06);
-        shadow-offset: 0px 2px;
-        shadow-opacity: 1;
-        shadow-radius: 4px;
-      `
-    } else {
-      return ''
-    }
-  }}
+  padding: 10px 20px;
 `
 
 export const ItemImage = styled.View`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: #d9d9d9;
   min-width: 45px;
   min-height: 45px;
@@ -86,7 +41,9 @@ export const FooterText = styled.Text<{ isEmpty?: boolean }>`
 
 export const ItemInfos = styled.View`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
 `
 
 export const CardTextInfo = styled.Text<{ color?: string; textSize?: string }>`
@@ -119,5 +76,6 @@ export const RightItemInfos = styled.View`
 
 export const ScrollContentContainer = styled.ScrollView`
   background-color: white;
-  max-height: 225px;
+  height: 100%;
+  max-height: 360px;
 `

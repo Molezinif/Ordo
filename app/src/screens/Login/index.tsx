@@ -32,6 +32,8 @@ export function Login() {
 
   return (
     <KeyboardAwareScrollView
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}
       resetScrollToCoords={{ x: 0, y: 0 }}
       scrollEnabled={true}
       style={{

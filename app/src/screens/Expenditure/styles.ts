@@ -14,14 +14,11 @@ export const TopBarContainer = styled.View`
 `
 
 export const MainContentContainer = styled.View`
-  display: flex;
-  gap: 40px;
   width: 100%;
-
   margin-top: 40px;
 `
 
-export const DashboardHeaderLabel = styled.Text`
+export const ExpenditureHeaderLabel = styled.Text`
   font-size: 24px;
   font-weight: 400;
 `

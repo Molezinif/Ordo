@@ -6,11 +6,7 @@ import { auth, db } from '../../../firebase'
 import { CustomInput } from '@/components/shared/CustomFuckingInput'
 import { Controller, useForm } from 'react-hook-form'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import {
-  collection,
-  doc,
-  setDoc
-} from 'firebase/firestore'
+import { collection, doc, setDoc, updateDoc } from 'firebase/firestore'
 
 export function Register({ navigation }: any) {
   const {
@@ -31,7 +27,7 @@ export function Register({ navigation }: any) {
       const userCollection = collection(db, `users`)
       const userDoc = doc(userCollection, user.uid)
 
-      await setDoc(userDoc, {
+      await updateDoc(userDoc, {
         email: data.email,
         user: data.user,
         phone: data?.phone
@@ -65,6 +61,8 @@ export function Register({ navigation }: any) {
 
   return (
     <KeyboardAwareScrollView
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}
       resetScrollToCoords={{ x: 0, y: 0 }}
       scrollEnabled={true}
       style={{
@@ -114,7 +112,9 @@ export function Register({ navigation }: any) {
             <CustomInput
               {...field}
               onChange={(event) => {
-                const formattedNumber = handleFormatPhoneNumber(event.target.value)
+                const formattedNumber = handleFormatPhoneNumber(
+                  event.target.value
+                )
                 field.onChange(formattedNumber)
               }}
               value={field.value}

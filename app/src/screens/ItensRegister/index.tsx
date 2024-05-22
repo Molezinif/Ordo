@@ -6,11 +6,22 @@ import { ButtonWrapper, Form, Header, Title, TitleText } from './styles'
 import { BasicButton } from '@/components/BasicButton'
 import { useItens } from '@/context/itensContext'
 import { CustomInput } from '@/components/shared/CustomFuckingInput'
-import { editProduct, registerProduct } from '@/services/repositories/itens'
+import { registerProduct } from '@/services/repositories/itens/registerProduct'
+
 import Toast from 'react-native-toast-message'
+import { editProduct } from '@/services/repositories/itens/editProduct'
 
 interface ItemRegisterToast {
   message: string
+}
+
+function generateMixedCode(length) {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  let result = ''
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length))
+  }
+  return result
 }
 
 export function ItensRegister({ navigation, route }: any) {
@@ -26,6 +37,7 @@ export function ItensRegister({ navigation, route }: any) {
     if (itemToEdit) {
       setValue('item', {
         ...itemToEdit,
+        quantityBeforeEdit: itemToEdit.quantity,
         costPrice: itemToEdit?.costPrice.toString(),
         sellingPrice: itemToEdit.sellingPrice.toString()
       })
@@ -53,7 +65,6 @@ export function ItensRegister({ navigation, route }: any) {
         })
         return data
       }
-
       await editProduct(data)
       await handleGetStock()
       navigation.goBack()
@@ -66,17 +77,16 @@ export function ItensRegister({ navigation, route }: any) {
     }
   }
 
-  const handleDateChange = (inputValue: string) => {
-    if (inputValue.length > 2 && inputValue.charAt(2) !== '/') {
-      inputValue = inputValue.slice(0, 2) + '/' + inputValue.slice(2)
+  useEffect(() => {
+    if (!itemToEdit) {
+      setValue('item.code', generateMixedCode(10))
     }
-
-    inputValue = inputValue.slice(0, 7)
-    return inputValue
-  }
+  }, [])
 
   return (
     <KeyboardAwareScrollView
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}
       resetScrollToCoords={{ x: 0, y: 0 }}
       scrollEnabled={true}
       style={{
@@ -116,6 +126,7 @@ export function ItensRegister({ navigation, route }: any) {
               value={field.value ?? '1'}
               placeholder="Insira a quantidade do produto"
               InputTitle="Quantidade:"
+              keyboardType={'number-pad'}
               type="numeric"
               error={error?.message}
             />
@@ -173,29 +184,38 @@ export function ItensRegister({ navigation, route }: any) {
             />
           </View>
         </View>
-        <Controller
+        {/* <Controller
           control={control}
           render={({ field, fieldState: { error } }) => (
             <CustomInput
               {...field}
               onChange={(text) => {
-                console.log(text.length < 8)
                 if (text.length < 8) {
                   const formattedDate = handleDateChange(text)
                   field.onChange(formattedDate)
+                }
+
+                const regex = new RegExp(/(0[1-9]|1[0-2])\/\d{4}$/)
+
+                if (!regex.test(text)) {
+                  setError(field.name, {
+                    message: 'Data inválida'
+                  })
+                } else {
+                  setError(field.name, {})
                 }
               }}
               value={field.value}
               placeholder="mm/aaaa"
               InputTitle="Validade:"
               type="numeric"
-              keyboardType={'numeric'}
+              keyboardType={'number-pad'}
               error={error?.message}
             />
           )}
           name="item.expiryDate"
           rules={{ required: 'Validade é obrigatória' }}
-        />
+        /> */}
         <Controller
           control={control}
           render={({ field, fieldState: { error } }) => (
@@ -208,6 +228,19 @@ export function ItensRegister({ navigation, route }: any) {
             />
           )}
           name="item.brand"
+        />
+        <Controller
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <CustomInput
+              {...field}
+              placeholder="Insira a categoria do produto"
+              InputTitle="Categoria:"
+              type="default"
+              error={error?.message}
+            />
+          )}
+          name="item.category"
         />
         <Controller
           control={control}

@@ -9,6 +9,7 @@ interface Props {
   size?: string
   fontSize?: number
   text: string
+  backgroundColor?: string
 }
 
 const BasicButton = ({

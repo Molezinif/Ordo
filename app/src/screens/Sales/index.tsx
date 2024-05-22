@@ -11,7 +11,7 @@ import {
   ScrollView
 } from './styles'
 import { Card } from '@/components/SaleCard'
-import { Modal, View } from 'native-base'
+import { Icon, Input, Modal, View } from 'native-base'
 import { CardTitle } from '@/components/ClientCard/styles'
 import { ToggleContainer } from '../Dashboard/styles'
 import { BasicButton, ToggleButton } from '@/components'
@@ -22,8 +22,9 @@ import { TouchableOpacity, Text } from 'react-native'
 import { postCurrentSale } from '@/services/repositories/sales'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useAuth } from '@/context/auth'
-import { useNavigation } from '@react-navigation/native'
-import { CommonActions } from '@react-navigation/native'
+import { useNavigation, CommonActions } from '@react-navigation/native'
+import { HeaderBackButton } from '@react-navigation/elements'
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
 
 const mockClients = [
   {
@@ -52,12 +53,12 @@ export function Sales() {
 
   const [installment, setInstallment] = React.useState(1)
 
+  const [discount, setDiscount] = React.useState('0')
+
   const { selectedItensToSell, setSelectedItensToSell, handleGetSalesHistory } =
     useItens()
 
   const toggleRef = React.useRef<any>(null)
-
-  const discount = 0
 
   function calculateTotal(cart) {
     let subtotal = 0
@@ -70,7 +71,10 @@ export function Sales() {
       subtotal += itemValue * selectedQuantity
     }
 
-    const total = subtotal - discount
+    const total =
+      subtotal - (discount ? parseFloat(discount) : 0) < 0
+        ? 0
+        : subtotal - (discount ? parseFloat(discount) : 0)
 
     return total.toFixed(2)
   }
@@ -103,7 +107,7 @@ export function Sales() {
                 setShowModal(false)
               }}
             >
-              <DiscountInfoContainer class="discountInfoContainer">
+              <DiscountInfoContainer>
                 <DiscountInfo>{`${item?.installment as string}X`}</DiscountInfo>
                 <DiscountInfo>{`R$${
                   item?.value.toFixed(2) as string
@@ -112,7 +116,7 @@ export function Sales() {
             </TouchableOpacity>
           ))
         ) : (
-          <DiscountInfoContainer class="discountInfoContainer">
+          <DiscountInfoContainer>
             <DiscountError>
               Selecione pelo menos um item para ver as parcelas disponíveis
               desta venda
@@ -130,13 +134,13 @@ export function Sales() {
         <SaleDetailsCard
           details={{
             installment,
-            discount,
+            discount: discount ? parseFloat(discount) : 0,
             total: calculateTotal(selectedItensToSell)
           }}
         />
       </>
     )
-  }, [installment, selectedItensToSell])
+  }, [installment, selectedItensToSell, discount])
 
   const handleFinishSale = async () => {
     if (selectedItensToSell.length === 0) {
@@ -145,7 +149,6 @@ export function Sales() {
     }
     const sale = {
       userUID: user?.uid,
-      client: mockClients[0],
       itens: selectedItensToSell,
       installment,
       discount,
@@ -157,6 +160,7 @@ export function Sales() {
     await handleGetSalesHistory()
 
     setSelectedItensToSell([])
+    setDiscount('0')
     navigation.dispatch(
       CommonActions.navigate({
         name: 'Success',
@@ -177,7 +181,10 @@ export function Sales() {
 
   return (
     <Container>
-      <ScrollView>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      >
         <ContentContainer>
           <Card
             title={'Itens'}
@@ -189,7 +196,32 @@ export function Sales() {
               )
             }}
           />
-          <ClientCard title={'Cliente'} itens={mockClients} />
+
+          <View style={{ display: 'flex', gap: 18 }}>
+            <CardTitle>Desconto</CardTitle>
+            <View>
+              <Input
+                keyboardType={'numeric'}
+                borderRadius={'8'}
+                size={'md'}
+                width={'55%'}
+                placeholder={'Insira o desconto'}
+                bgColor={'white'}
+                value={discount}
+                onChangeText={(e) => {
+                  setDiscount(e)
+                }}
+                autoCapitalize="none"
+                InputRightElement={
+                  <Icon
+                    color={'#b4b4b4'}
+                    marginRight={2}
+                    as={<FontAwesome6 name="brazilian-real-sign" size={14} />}
+                  />
+                }
+              />
+            </View>
+          </View>
           <View
             style={{
               display: 'flex',
@@ -226,6 +258,7 @@ export function Sales() {
                 <Modal.Body>{renderDiscountList()}</Modal.Body>
               </Modal.Content>
             </Modal>
+
             {renderSaleDetails()}
 
             <Modal

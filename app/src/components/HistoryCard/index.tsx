@@ -1,8 +1,6 @@
 import {
-  CardView,
   CardContainer,
   ItemContainer,
-  ItemImage,
   ItemInfos,
   LeftItemInfos,
   CardTextInfo,
@@ -12,7 +10,8 @@ import {
 import React from 'react'
 import { View } from 'native-base'
 import { CardTitle } from '../ClientCard/styles'
-import { NoResultsFoundComponent } from '../NoResultsFound'
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
+import { ETransactionOrigin } from '@/services/repositories/transactions'
 
 export function Item({ item }: any) {
   return (
@@ -26,69 +25,89 @@ export function Item({ item }: any) {
             alignItems: 'center'
           }}
         >
-          <ItemImage />
           <ItemInfos>
-            <CardTextInfo>{item?.client}</CardTextInfo>
-            <CardTextInfo>{`Data: ${item?.saleDate as string}`}</CardTextInfo>
+            <FontAwesome6
+              solid
+              name={
+                item.type === ETransactionOrigin.inventoryReceipt
+                  ? 'caret-down'
+                  : 'caret-up'
+              }
+              size={25}
+              color={
+                item.type === ETransactionOrigin.inventoryReceipt
+                  ? '#ff0011'
+                  : 'green'
+              }
+            />
+            <CardTextInfo>{`Data: ${item?.date as string}`}</CardTextInfo>
           </ItemInfos>
         </View>
       </LeftItemInfos>
       <RightItemInfos>
-        <CardTextInfo>{`R$${item?.total as string}`}</CardTextInfo>
+        <CardTextInfo>
+          {Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+          }).format(item?.total)}
+        </CardTextInfo>
       </RightItemInfos>
     </ItemContainer>
   )
 }
 
-interface HistoryCardProps {
-  historyItens: any[]
-  notFoundContent?: boolean
-}
-
-export function HistoryCard({
-  historyItens,
-  notFoundContent
-}: Readonly<HistoryCardProps>) {
-  if (notFoundContent) {
+export function HistoryCard({ historyItens }: any) {
+  if (!historyItens) {
+    const mock = [1, 2, 3, 4, 5, 6, 7, 8]
     return (
       <CardContainer>
         <CardTitle>Vendas recentes</CardTitle>
-        <CardView hasContent={historyItens?.length}>
-          <ScrollContentContainer>
-            <View style={{ display: 'flex', gap: 10 }}>
-              <NoResultsFoundComponent size="sm" />
-            </View>
-          </ScrollContentContainer>
-        </CardView>
+
+        <ScrollContentContainer
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+        >
+          <View style={{ display: 'flex', gap: 10 }}>
+            {mock.map((_, index) => {
+              return (
+                <View
+                  style={{
+                    width: '100%',
+                    height: 40,
+                    backgroundColor: '#F1F1F1',
+                    borderRadius: 8
+                  }}
+                  key={index}
+                />
+              )
+            })}
+          </View>
+        </ScrollContentContainer>
       </CardContainer>
     )
   }
 
   return (
     <CardContainer>
-      <CardTitle>Vendas recentes</CardTitle>
-      <CardView hasContent={historyItens?.length}>
-        <ScrollContentContainer>
-          <View style={{ display: 'flex', gap: 10 }}>
-            {historyItens?.map((item) => {
-              const formattedDate = new Date(
-                item.createdAt
-              ).toLocaleDateString()
-              return (
-                <Item
-                  key={item.saleHistoryUUID}
-                  item={{
-                    client: item?.client.name,
-                    saleDate: formattedDate,
-                    installment: item?.installment,
-                    total: item?.total
-                  }}
-                />
-              )
-            })}
-          </View>
-        </ScrollContentContainer>
-      </CardView>
+      <CardTitle>Atividade Recente</CardTitle>
+
+      <ScrollContentContainer
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      >
+        {historyItens?.map((item, index) => {
+          return (
+            <Item
+              key={index}
+              item={{
+                type: item.type,
+                date: item.transactionDate,
+                total: item?.value
+              }}
+            />
+          )
+        })}
+      </ScrollContentContainer>
     </CardContainer>
   )
 }
