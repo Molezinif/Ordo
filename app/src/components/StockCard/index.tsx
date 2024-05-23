@@ -9,6 +9,7 @@ import {
   RightItemInfos,
   CardTextInfo
 } from './styles'
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
 import React from 'react'
 
 export function Item({ item }: any) {
@@ -16,7 +17,9 @@ export function Item({ item }: any) {
     <ItemContainer>
       <LeftItemInfos>
         <View style={{ display: 'flex', flexDirection: 'row', gap: 5 }}>
-          <ItemImage />
+          <ItemImage>
+            <FontAwesome6 name="boxes-stacked" size={24} color={'#1E3050'} />
+          </ItemImage>
           <ItemInfos>
             <CardTextInfo>{item?.name}</CardTextInfo>
             <CardTextInfo>{`Código: ${item?.code as string}`}</CardTextInfo>
@@ -41,9 +44,12 @@ export function StockCards({ itens, onPressItemCallback }: any) {
     <CardContainer>
       <CardView>
         {itens.map((item, index) => (
-          <TouchableOpacity key={index} onPress={() => {
-            onPressItemCallback(item)
-          }}>
+          <TouchableOpacity
+            key={index}
+            onPress={() => {
+              onPressItemCallback(item)
+            }}
+          >
             <Item
               item={{
                 name: item.productName,

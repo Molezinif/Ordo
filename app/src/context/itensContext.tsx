@@ -20,6 +20,8 @@ interface ItensContextData {
   handleGetStock(): any
   handleGetSalesHistory(): any
   handleSearchStock(search: string): any
+  triggerTransaction: boolean
+  setTriggerTransaction: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 interface AuthProviderProps {
@@ -33,6 +35,7 @@ const ItemProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [selectedItensToSell, setSelectedItensToSell] = useState<any>([])
   const [salesHistory, setSalesHistory] = useState<any>([])
   const [notFoundProducts, setNotFoundProducts] = useState<boolean>(false)
+  const [triggerTransaction, setTriggerTransaction] = useState<boolean>(true)
 
   const handleGetStock = useCallback(async () => {
     await getStock().then((data) => {
@@ -72,7 +75,9 @@ const ItemProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setSalesHistory,
       handleGetSalesHistory,
       handleSearchStock,
-      notFoundProducts
+      notFoundProducts,
+      triggerTransaction,
+      setTriggerTransaction
     }),
     [
       handleGetSalesHistory,

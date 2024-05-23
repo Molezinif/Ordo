@@ -1,5 +1,4 @@
 /* eslint-disable no-unreachable-loop */
-import { ClientCard } from '@/components/ClientCard'
 import {
   ButtonContainer,
   Container,
@@ -23,16 +22,7 @@ import { postCurrentSale } from '@/services/repositories/sales'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useAuth } from '@/context/auth'
 import { useNavigation, CommonActions } from '@react-navigation/native'
-import { HeaderBackButton } from '@react-navigation/elements'
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
-
-const mockClients = [
-  {
-    id: 1,
-    name: 'Gabriel Molezini',
-    personalDocument: '999.999.999-99'
-  }
-]
 
 export function Sales() {
   const navigation = useNavigation()
@@ -55,8 +45,12 @@ export function Sales() {
 
   const [discount, setDiscount] = React.useState('0')
 
-  const { selectedItensToSell, setSelectedItensToSell, handleGetSalesHistory } =
-    useItens()
+  const {
+    selectedItensToSell,
+    setSelectedItensToSell,
+    handleGetSalesHistory,
+    setTriggerTransaction
+  } = useItens()
 
   const toggleRef = React.useRef<any>(null)
 
@@ -157,10 +151,13 @@ export function Sales() {
 
     await postCurrentSale(sale)
 
+    setTriggerTransaction(true)
+
     await handleGetSalesHistory()
 
     setSelectedItensToSell([])
     setDiscount('0')
+
     navigation.dispatch(
       CommonActions.navigate({
         name: 'Success',

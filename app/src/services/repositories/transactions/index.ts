@@ -286,6 +286,10 @@ export const getAllTransactions = async () => {
           month: 'numeric',
           year: 'numeric'
         }),
+        transactionHour: transactionDate.toLocaleString('pt-BR', {
+          hour: 'numeric',
+          minute: 'numeric'
+        }),
         type: item.origin,
         value: item.value
       }

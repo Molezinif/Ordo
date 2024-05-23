@@ -21,6 +21,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { BasicButton } from '../BasicButton'
 import { NoResultsFoundComponent } from '../NoResultsFound'
 import { AnimaterFlyPaperLoading } from '../AnimatedView'
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
 
 export function Item({ item, isItensSelectable, checkBoxDisplay }: any) {
   return (
@@ -40,7 +41,9 @@ export function Item({ item, isItensSelectable, checkBoxDisplay }: any) {
               accessibilityLabel="This is a dummy checkbox"
             />
           ) : (
-            <ItemImage />
+            <ItemImage>
+              <FontAwesome6 name="boxes-stacked" size={24} color={'#1E3050'} />
+            </ItemImage>
           )}
           <ItemInfos>
             <CardTextInfo>{item?.name}</CardTextInfo>

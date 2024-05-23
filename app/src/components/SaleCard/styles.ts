@@ -68,9 +68,11 @@ export const CardView = styled.View<{ hasContent: boolean }>`
 `
 
 export const ItemImage = styled.View`
-  background-color: #d9d9d9;
-  min-width: 45px;
-  min-height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
   border-radius: 8px;
 `
 

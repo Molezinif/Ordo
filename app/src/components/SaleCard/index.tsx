@@ -13,11 +13,14 @@ import MaterialCommunityIcons from 'react-native-vector-icons/AntDesign'
 import { View } from 'native-base'
 import { CardTitle } from '../ClientCard/styles'
 import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler'
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
 
 export function Item({ item }: any) {
   return (
     <ItemContainer>
-      <ItemImage />
+      <ItemImage>
+        <FontAwesome6 name="boxes-stacked" size={24} color={'#1E3050'} />
+      </ItemImage>
       <ItemInfos>
         <Text>{item?.name}</Text>
         <Text>{`R$${parseFloat(item.value)?.toFixed(2)} (R$${parseFloat(

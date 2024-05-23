@@ -26,7 +26,7 @@ function generateMixedCode(length) {
 
 export function ItensRegister({ navigation, route }: any) {
   const { control, handleSubmit, setValue } = useForm()
-  const { handleGetStock } = useItens()
+  const { handleGetStock, setTriggerTransaction } = useItens()
 
   let itemToEdit
   if (route?.params?.itemToEdit) {
@@ -68,6 +68,8 @@ export function ItensRegister({ navigation, route }: any) {
       await editProduct(data)
       await handleGetStock()
       navigation.goBack()
+      setTriggerTransaction(true)
+
       showToast({
         message: `Produto alterado com sucesso!`
       })

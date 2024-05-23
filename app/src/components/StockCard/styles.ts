@@ -29,8 +29,10 @@ export const CardView = styled.View`
   border-radius: 8px;
 `
 
-export const ItemImage = styled.View<{ isItensSelectable?: boolean }>`
-  background-color: #d9d9d9;
+export const ItemImage = styled.View`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   min-width: 40px;
   min-height: 40px;
   border-radius: 8px;

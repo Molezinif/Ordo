@@ -8,7 +8,7 @@ import {
   ScrollContentContainer
 } from './styles'
 import React from 'react'
-import { View } from 'native-base'
+import { View, Text } from 'native-base'
 import { CardTitle } from '../ClientCard/styles'
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
 import { ETransactionOrigin } from '@/services/repositories/transactions'
@@ -40,7 +40,10 @@ export function Item({ item }: any) {
                   : 'green'
               }
             />
-            <CardTextInfo>{`Data: ${item?.date as string}`}</CardTextInfo>
+            <View>
+              <CardTextInfo>{`Data: ${item?.date as string}`}</CardTextInfo>
+              <Text>{`Hora: ${item.hour}`}</Text>
+            </View>
           </ItemInfos>
         </View>
       </LeftItemInfos>
@@ -102,6 +105,7 @@ export function HistoryCard({ historyItens }: any) {
               item={{
                 type: item.type,
                 date: item.transactionDate,
+                hour: item.transactionHour,
                 total: item?.value
               }}
             />

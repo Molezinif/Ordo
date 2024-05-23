@@ -10,11 +10,14 @@ export const getProduct = async (productUUID: string): Promise<any> => {
       itemCollection,
       where('productUUID', '==', productUUID)
     )
-    const itemDoc = await getDocs(itemQuery).then((data) => data.docs[0])
+    const itemDoc = await getDocs(itemQuery).then((data) => data?.docs[0])
+
+    if(!itemDoc) {
+      console.log('Item não encontrado', productUUID)
+    }
 
     return itemDoc.data()
   } catch (e) {
-    console.error(e)
     return false
   }
 }

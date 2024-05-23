@@ -92,7 +92,8 @@ export function Register({ navigation }: any) {
           rules={{
             required: 'Email é obrigatório',
             validate: (value) => {
-              const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+              const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+              const isValidEmail = value ? regex.test(value) : true
               if (!isValidEmail) {
                 setError('email', {
                   type: 'validate',
@@ -113,7 +114,7 @@ export function Register({ navigation }: any) {
               {...field}
               onChange={(event) => {
                 const formattedNumber = handleFormatPhoneNumber(
-                  event.target.value
+                  event
                 )
                 field.onChange(formattedNumber)
               }}

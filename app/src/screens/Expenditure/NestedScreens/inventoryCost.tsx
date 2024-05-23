@@ -42,7 +42,7 @@ export function InventoryCostExpenditure({ navigation }: any) {
   return (
     <Container>
       <TopBarContainer>
-        <ExpenditureHeaderLabel>Custo de estoque</ExpenditureHeaderLabel>
+        <ExpenditureHeaderLabel>Entrada de estoque</ExpenditureHeaderLabel>
       </TopBarContainer>
       <MainContentContainer>
         <View style={{ display: 'flex', gap: 40 }}>

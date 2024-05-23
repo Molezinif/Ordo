@@ -22,6 +22,10 @@ export const registerProduct = async (data): Promise<any> => {
       brand: data?.item?.brand ?? null,
       category: data?.item?.category ?? null,
       expiryDate: data?.item?.expiryDate ?? null,
+      productScore: {
+        score: 0,
+        totalScore: 0
+      },
       createdAt: new Date(),
       updatedAt: new Date()
     }

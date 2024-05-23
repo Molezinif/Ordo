@@ -8,8 +8,8 @@ import {
 } from './styles'
 import { mockAvatarImage } from '@/constants/dashboard'
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
-import React, { useEffect, useRef, useState } from 'react'
-import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { TouchableOpacity } from 'react-native'
 import { HistoryCard } from '@/components/HistoryCard'
 import { useItens } from '@/context/itensContext'
 import { useAuth } from '@/context/auth'
@@ -18,7 +18,8 @@ import { getAverageMonthlyExpenditures } from '@/services/repositories/expenditu
 import { getAllTransactions } from '@/services/repositories/transactions'
 
 export function Dashboard({ navigation }: any) {
-  const { salesHistory, handleGetSalesHistory } = useItens()
+  const { handleGetSalesHistory, triggerTransaction, setTriggerTransaction } =
+    useItens()
   const [showExitIcon, setShowExitIcon] = useState(false)
   const [averageMonthlyExpenditures, setAverageMonthlyExpenditures] =
     React.useState({
@@ -27,10 +28,7 @@ export function Dashboard({ navigation }: any) {
       averageOtherCost: 0,
       averageTotalCost: 0
     })
-
   const [transactions, setTransactions] = useState([])
-
-  const ref = useRef(null)
 
   useEffect(() => {
     handleGetSalesHistory()
@@ -40,6 +38,27 @@ export function Dashboard({ navigation }: any) {
   const handleSignOut = () => {
     signOut()
   }
+  console.log(triggerTransaction)
+  useEffect(() => {
+    if (triggerTransaction) {
+      getAverageMonthlyExpenditures()
+        .then((data) => {
+          setAverageMonthlyExpenditures(data)
+        })
+        .catch((err) => {
+          console.error('Error fetching data:', err)
+        })
+
+      getAllTransactions()
+        .then((data: any) => {
+          setTransactions(data)
+        })
+        .catch((err) => {
+          console.error('Error fetching data:', err)
+        })
+      setTriggerTransaction(false)
+    }
+  }, [triggerTransaction])
 
   useEffect(() => {
     getAverageMonthlyExpenditures()
@@ -49,9 +68,7 @@ export function Dashboard({ navigation }: any) {
       .catch((err) => {
         console.error('Error fetching data:', err)
       })
-  }, [])
 
-  useEffect(() => {
     getAllTransactions()
       .then((data: any) => {
         setTransactions(data)
@@ -59,6 +76,7 @@ export function Dashboard({ navigation }: any) {
       .catch((err) => {
         console.error('Error fetching data:', err)
       })
+    setTriggerTransaction(false)
   }, [])
 
   return (

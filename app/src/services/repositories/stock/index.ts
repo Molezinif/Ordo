@@ -11,7 +11,7 @@ export const getStock = async (): Promise<DocumentData[]> => {
   const userDoc = await getUserDoc()
   const q = query(
     collection(userDoc, 'stock'),
-    orderBy('createdAt')
+    orderBy('createdAt', 'desc')
   )
   const querySnapshot = await getDocs(q).then((data) => data)
 
