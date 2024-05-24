@@ -34,7 +34,7 @@ export function Stock({ navigation }: any) {
     }, 1000)
   }, [handleGetStock])
 
-  const { register } = useForm()
+  const { register, setValue } = useForm()
 
   return (
     <Container>
@@ -45,7 +45,10 @@ export function Stock({ navigation }: any) {
             text="+ Cadastrar"
             size="sm"
             fontSize={14}
-            onPress={() => navigation.navigate('ItensRegister')}
+            onPress={() => {
+              setSearchInputValue('')
+              navigation.navigate('ItensRegister')
+            }}
           />
         </HeaderContainer>
         <SearchInputContainer>
