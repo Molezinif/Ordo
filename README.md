@@ -52,16 +52,31 @@ npm start
         </sub>
       </a>
     </td>
-    <td align="center">
-      <a href="https://github.com/Bilator3000">
-        <img src="https://github.com/Bilator3000.png" width="100px;" alt="Foto de Matheus Lima no GitHub"/><br>
-        <sub>
-          <b>Matheus Lima</b>
-        </sub>
-      </a>
-    </td>  
   </tr>
 </table>
+
+## Screenshots
+
+<div class="image-container">
+
+![Image1](./screenshots/image1.jpeg)
+![Image2](./screenshots/image2.jpeg)
+![Image3](./screenshots/image3.jpeg)
+![Image4](./screenshots/image4.jpeg)
+![Image5](./screenshots/image5.jpeg)
+![Image6](./screenshots/image6.jpeg)
+![Image7](./screenshots/image7.jpeg)
+![Image8](./screenshots/image8.jpeg)
+![Image9](./screenshots/image9.jpeg)
+![Image10](./screenshots/image10.jpeg)
+![Image11](./screenshots/image11.jpeg)
+![Image12](./screenshots/image12.jpeg)
+![Image13](./screenshots/image13.jpeg)
+![Image14](./screenshots/image14.jpeg)
+![Image15](./screenshots/image15.jpeg)
+![Image16](./screenshots/image16.jpeg)
+![Image17](./screenshots/image17.jpeg)
+![Image18](./screenshots/image18.jpeg)
 
 ## :link: Links
 

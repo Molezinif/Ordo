@@ -112,7 +112,7 @@ export function Chart() {
 
         return financeChartOptionSelected ===
           EFinancesChartOptions.InventoryProfit
-          ? 'green.400'
+          ? 'green.600'
           : 'yellow.300'
       },
     []
@@ -269,7 +269,7 @@ export function Chart() {
               )}
             </View>
             <View style={{ display: 'flex', gap: 10 }}>
-              <ChartTitle>Tendencias</ChartTitle>
+              <ChartTitle>Tendências</ChartTitle>
               <Select
                 placeholder="Selecione"
                 selectedValue={pieChartOption}
@@ -385,7 +385,7 @@ export function Chart() {
                           style={{
                             fontWeight: 400,
                             fontSize: 16,
-                            color: '#2BC016'
+                            color: '#5f5f5f'
                           }}
                         >
                           {pieChartOption === EPieChartOptions.bill

@@ -29,6 +29,7 @@ import {
 } from 'native-base'
 import { BasicButton } from '@/components'
 import { useExpenditure } from '../hook'
+import Toast from 'react-native-toast-message'
 
 export function Expenditures({ navigation }: any) {
   const mockGroup = [
@@ -86,6 +87,15 @@ export function Expenditures({ navigation }: any) {
       })
   }
 
+  const showToast = ({ message }: any) => {
+    Toast.show({
+      type: 'success',
+      text1: 'Sucesso',
+      text2: message,
+      visibilityTime: 5000
+    })
+  }
+
   const onSubmitModal = async (data) => {
     try {
       const { name, value } = data
@@ -121,6 +131,10 @@ export function Expenditures({ navigation }: any) {
 
       handleGetExpenditures()
 
+      showToast({
+        message: `Despesa criada com sucesso!`
+      })
+
       setModalProps(modalPropsDefaultValue)
     } catch {
       setModalProps(modalPropsDefaultValue)
@@ -133,6 +147,10 @@ export function Expenditures({ navigation }: any) {
 
       handleGetExpenditures()
 
+      showToast({
+        message: `Despesa excluída com sucesso!`
+      })
+
       setModalProps(modalPropsDefaultValue)
     } catch {
       setModalProps(modalPropsDefaultValue)
@@ -144,6 +162,10 @@ export function Expenditures({ navigation }: any) {
       await editExpenditure(expenditureUUID, data)
 
       handleGetExpenditures()
+
+      showToast({
+        message: `Despesa editada com sucesso!`
+      })
 
       setModalProps(modalPropsDefaultValue)
     } catch {
@@ -293,7 +315,7 @@ export function Expenditures({ navigation }: any) {
         <TopBarContainer>
           <ExpenditureHeaderLabel>Despesas</ExpenditureHeaderLabel>
         </TopBarContainer>
-        <MainContentContainer >
+        <MainContentContainer showsVerticalScrollIndicator={false}>
           <View style={{ display: 'flex', gap: 40 }}>
             {groupData.length ? (
               <>
@@ -306,7 +328,8 @@ export function Expenditures({ navigation }: any) {
                         setModalProps({
                           showModal: true,
                           month: group.groupMonthDetails.month,
-                          dateObj: group.groupMonthDetails.dateObj ?? new Date(),
+                          dateObj:
+                            group.groupMonthDetails.dateObj ?? new Date(),
                           isEditing: false
                         })
                       }}
